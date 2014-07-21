@@ -1,5 +1,5 @@
 /*
- * ILoadingLayout.cpp
+ * ILoadingLayout.h
  *
  *  Created on: Jul 21, 2014
  *      Author: seungju
@@ -22,7 +22,7 @@ public:
 	 *
 	 * @param label - Label to set
 	 */
-	virtual void setLastUpdatedLabel(CharSequence label);
+	void setLastUpdatedLabel(CharSequence label);
 
 	/**
 	 * Set the drawable used in the loading layout. This is the same as calling
@@ -30,7 +30,7 @@ public:
 	 *
 	 * @param drawable - Drawable to display
 	 */
-	virtual void setLoadingDrawable(Drawable drawable);
+	void setLoadingDrawable(Drawable drawable);
 
 	/**
 	 * Set Text to show when the Widget is being Pulled
@@ -38,7 +38,7 @@ public:
 	 *
 	 * @param pullLabel - CharSequence to display
 	 */
-	virtual void setPullLabel(CharSequence pullLabel);
+	void setPullLabel(CharSequence pullLabel);
 
 	/**
 	 * Set Text to show when the Widget is refreshing
@@ -65,7 +65,7 @@ public:
 	 */
 	virtual void setTextTypeface(Typeface tf);
 
-}
+};
 
 
 

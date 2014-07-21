@@ -5,10 +5,16 @@
  *      Author: seungju
  */
 #include<cstring>
+#include<FlipLoadingLayout.cpp>
+#include<LoadingLayout.cpp>
+#include<RotateLoadingLayout.cpp>
+#include<Utils.cpp>
+#include<ViewCompat.cpp>
 
 using namespace std;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
+using namespace Tizen::Ui::Controls::ListView;
 using namespace Tizen::Ui::Graphics;
 using namespace Tizen::Ui::VerticalBoxLayout;
 
@@ -635,7 +641,7 @@ public:
 	 *
 	 * @author Chris Banes
 
-	public static interface OnPullEventListener<V extends View> {
+	public static interface OnPullEventListener<V extends View> { //이건 외부? 따로?
 
 		/**
 		 * Called when the internal state has been changed, usually by the user
@@ -658,7 +664,7 @@ public:
 	 *
 	 * @author Chris Banes
 
-	public static interface OnRefreshListener<V extends View> {
+	public static interface OnRefreshListener<V extends View> { //이런건 여기있어도 될듯
 
 		/**
 		 * onRefresh will be called for both a Pull from start, and Pull from
@@ -675,7 +681,7 @@ public:
 	 *
 	 * @author Chris Banes
 
-	public static interface OnRefreshListener2<V extends View> {
+	public static interface OnRefreshListener2<V extends View> {  //이건 내부
 		// TODO These methods need renaming to START/END rather than DOWN/UP
 
 		/**
@@ -692,7 +698,7 @@ public:
 
 	}
 
-	static interface OnSmoothScrollFinishedListener {
+	static interface OnSmoothScrollFinishedListener { //이건 내
 		void onSmoothScrollFinished();
 	}
 	*/
