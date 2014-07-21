@@ -4,25 +4,24 @@
  *  Created on: Jul 21, 2014
  *      Author: seungju
  */
+#include <FBase.h>
+#include <FGraphics.h>
 
-/*
-package com.handmark.pulltorefresh.library;
+using namespace Tizen::Base;
+using namespace Tizen::Graphics;
 
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-*/
 
-class ILoadingLayout {
+class ILoadingLayout{
 
 public:
-
+	virtual ~ILoadingLayout(void) {} 
 	/**
 	 * Set the Last Updated Text. This displayed under the main label when
 	 * Pulling
 	 *
 	 * @param label - Label to set
 	 */
-	void setLastUpdatedLabel(CharSequence label);
+	virtual void setLastUpdatedLabel(const String& label);
 
 	/**
 	 * Set the drawable used in the loading layout. This is the same as calling
@@ -30,7 +29,7 @@ public:
 	 *
 	 * @param drawable - Drawable to display
 	 */
-	void setLoadingDrawable(Drawable drawable);
+	virtual void setLoadingDrawable(Bitmap* bitmap);
 
 	/**
 	 * Set Text to show when the Widget is being Pulled
@@ -38,7 +37,7 @@ public:
 	 *
 	 * @param pullLabel - CharSequence to display
 	 */
-	void setPullLabel(CharSequence pullLabel);
+	virtual void setPullLabel(const String& pullLabel);
 
 	/**
 	 * Set Text to show when the Widget is refreshing
@@ -46,7 +45,7 @@ public:
 	 *
 	 * @param refreshingLabel - CharSequence to display
 	 */
-	virtual void setRefreshingLabel(CharSequence refreshingLabel);
+	virtual void setRefreshingLabel(const String& refreshingLabel);
 
 	/**
 	 * Set Text to show when the Widget is being pulled, and will refresh when
@@ -55,16 +54,15 @@ public:
 	 *
 	 * @param releaseLabel - CharSequence to display
 	 */
-	virtual void setReleaseLabel(CharSequence releaseLabel);
+	virtual void setReleaseLabel(const String& releaseLabel);
 
 	/**
 	 * Set's the Sets the typeface and style in which the text should be
 	 * displayed. Please see
 	 * {@link android.widget.TextView#setTypeface(Typeface)
-	 * TextView#setTypeface(Typeface)}.
+	 * TextView#setTypeface(Typeface)}. 
 	 */
-	virtual void setTextTypeface(Typeface tf);
-
+	virtual void setTextFont(Font font);
 };
 
 
