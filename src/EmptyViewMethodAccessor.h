@@ -13,6 +13,7 @@
  */
 
 using namespace Tizen::Ui;
+using namespace Tizen::Ui::Controls;
 using namespace Tizen::Ui::Controls::ListView;
 using namespace Tizen::Base;
 
