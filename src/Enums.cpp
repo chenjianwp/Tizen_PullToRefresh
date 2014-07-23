@@ -9,6 +9,207 @@
 #include<ListenerInterface.cpp>
 
 
+	class AnimationStyle {
+
+	public:
+
+		static const AnimationStyle ROTATE = 0x0;
+		static const AnimationStyle FLIP = 0x1;
+
+		static AnimationStyle getDefault() {
+			return ROTATE;
+		}
+
+		static AnimationStyle mapIntToValue(int modeInt) {
+			switch (modeInt) {
+				case 0x0:
+				default:
+					return ROTATE;
+				case 0x1:
+					return FLIP;
+			}
+		}
+
+		LoadingLayout createLoadingLayout(Context context, Mode mode, Orientation scrollDirection, TypedArray attrs) {
+			switch (this) {
+				case ROTATE:
+				default:
+					return new RotateLoadingLayout(context, mode, scrollDirection, attrs);
+				case FLIP:
+					return new FlipLoadingLayout(context, mode, scrollDirection, attrs);
+			}
+		}
+
+	};
+
+	class State {
+
+	public:
+
+		static const State RESET =0x0;
+		static const State PULL_TO_REFRESH =0x1;
+		static const State RELEASE_TO_REFRESH =0x2;
+		static const State REFRESHING =0x8;
+		static const State MANUAL_REFRESHING =0x9;
+		static const State OVERSCROLLING =0x10;
+
+		static State mapIntToValue(const int stateInt) {
+
+				switch (stateInt) {
+					case 0x0:
+					default:
+						mIntValue = stateInt;
+						return RESET;
+					case 0x1:
+						mIntValue = stateInt;
+						return PULL_TO_REFRESH;
+					case 0x2:
+						mIntValue = stateInt;
+						return RELEASE_TO_REFRESH;
+					case 0x8:
+						mIntValue = stateInt;
+						return REFRESHING;
+					case 0x9:
+						mIntValue = stateInt;
+						return MANUAL_REFRESHING;
+					case 0x10:
+						mIntValue = stateInt;
+						return OVERSCROLLING;
+				}
+		}
+
+		/*
+		State(int intValue) {
+			mIntValue = intValue;
+		}*/
+
+		int getIntValue() {
+			return mIntValue;
+		}
+
+	private:
+		int mIntValue;
+
+	};
+
+	class Mode {
+
+	public:
+		/**
+		 * Disable all Pull-to-Refresh gesture and Refreshing handling
+		*/
+		static const Mode DISABLED = 0x0;
+
+		/**
+		 * Only allow the user to Pull from the start of the Refreshable View to
+		 * refresh. The start is either the Top or Left, depending on the
+		 * scrolling direction.
+		*/
+		static const Mode PULL_FROM_START =0x1;
+
+		/**
+		 * Only allow the user to Pull from the end of the Refreshable View to
+		 * refresh. The start is either the Bottom or Right, depending on the
+		 * scrolling direction.
+		*/
+		static const Mode PULL_FROM_END=0x2;
+
+		/**
+		 * Allow the user to both Pull from the start, from the end to refresh.
+		*/
+		static const Mode BOTH = 0x3;
+
+		/**
+		 * Disables Pull-to-Refresh gesture handling, but allows manually
+		 * setting the Refresh state via
+		 * {@link PullToRefreshBase#setRefreshing() setRefreshing()}.
+		*/
+		static const Mode MANUAL_REFRESH_ONLY =0x4;
+
+		/**
+		 * @deprecated Use {@link #PULL_FROM_START} from now on.
+		*/
+		static Mode PULL_DOWN_TO_REFRESH = Mode.PULL_FROM_START;
+
+		/**
+		 * @deprecated Use {@link #PULL_FROM_END} from now on.
+		 */
+		static Mode PULL_UP_TO_REFRESH = Mode.PULL_FROM_END;
+
+		/**
+		 * Maps an int to a specific mode. This is needed when saving state, or
+		 * inflating the view from XML where the mode is given through a attr
+		 * int.
+		 *
+		 * @param modeInt - int to map a Mode to
+		 * @return Mode that modeInt maps to, or PULL_FROM_START by default.
+		 */
+		static Mode mapIntToValue(const int modeInt) {
+
+			switch (modeInt) {
+				case 0x0:
+					mIntValue = modeInt;
+					return DISABLED;
+				case 0x1:
+				default:
+					mIntValue = modeInt;
+					return PULL_FROM_START;
+				case 0x2:
+					mIntValue = modeInt;
+					return PULL_FROM_END;
+				case 0x3:
+					mIntValue = modeInt;
+					return BOTH;
+				case 0x4:
+					mIntValue = modeInt;
+					return MANUAL_REFRESH_ONLY;
+			}
+		}
+
+		static Mode getDefault() {
+			return PULL_FROM_START;
+		}
+
+		// The modeInt values need to match those from attrs.xml
+		/*
+		Mode(int modeInt) {
+			mIntValue = modeInt;
+		}*/
+
+		/**
+		 * @return true if the mode permits Pull-to-Refresh
+		*/
+		bool permitsPullToRefresh() {
+			return !(this == DISABLED || this == MANUAL_REFRESH_ONLY);
+		}
+
+		/**
+		 * @return true if this mode wants the Loading Layout Header to be shown
+		*/
+		bool showHeaderLoadingLayout() {
+			return this == PULL_FROM_START || this == BOTH;
+		}
+
+		/**
+		 * @return true if this mode wants the Loading Layout Footer to be shown
+		*/
+		bool showFooterLoadingLayout() {
+			return this == PULL_FROM_END || this == BOTH || this == MANUAL_REFRESH_ONLY;
+		}
+
+		int getIntValue() {
+			return mIntValue;
+		}
+
+
+	private:
+		int mIntValue;
+
+
+	};
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	static enum AnimationStyle {
 		/**
 		 * This is the default for Android-PullToRefresh. Allows you to use any
