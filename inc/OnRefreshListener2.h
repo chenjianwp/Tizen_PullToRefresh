@@ -15,7 +15,7 @@ using namespace Tizen::Ui::Controls;
 class PullToRefreshBase<ListView>;
 
 class OnRefreshListener{
-	virtual void ~OnRefreshListener(void);
+	virtual ~OnRefreshListener(void);
 
 	/**
 	 * onPullDownToRefresh will be called only when the user has Pulled from

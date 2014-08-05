@@ -15,7 +15,7 @@ using namespace Tizen::Ui::Controls;
 class PullToRefreshBase<ListView>;
 
 class OnRefreshListener{
-	virtual void ~OnRefreshListener(void);
+	virtual ~OnRefreshListener(void);
 
 	virtual void onRefresh(const PullToRefreshBase<ListView>& refreshView);
 };

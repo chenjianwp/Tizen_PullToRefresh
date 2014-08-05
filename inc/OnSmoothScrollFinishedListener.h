@@ -16,7 +16,7 @@
 class OnSmoothScrollFinishedListener{
 	virtual ~OnSmoothScrollFinishedListener(void);
 
-	virtual void OnSmoothScrollFinishedListener(void);
+	OnSmoothScrollFinishedListener(void);
 };
 
 #endif /* ONSMOOTHSCROLLFINISHEDLISTENER_H_ */
