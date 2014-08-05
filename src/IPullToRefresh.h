@@ -17,8 +17,22 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.State;
 */
+#include<ILoadingLayout.h>
+#include<PullToRefreshBase.cpp>
+#include<Enums.cpp>
 
-class IPullToRefresh //<T extends View>
+using namespace std;
+using namespace Tizen::Ui;
+using namespace Tizen::Ui::Controls;
+using namespace Tizen::Ui::Controls::ListView;
+using namespace Tizen::Ui::Graphics;
+using namespace Tizen::Base;
+using namespace Tizen::Ui::VerticalBoxLayout;
+using namespace Tizen::Media;
+
+
+//<T extends View>
+class IPullToRefresh
 {
 
 	/**
@@ -32,6 +46,7 @@ class IPullToRefresh //<T extends View>
 	 */
 public:
 
+	virtual ~IPullToRefresh(){}
 	bool demo();
 
 	/**
@@ -79,7 +94,7 @@ public:
 	 * @return Object which will proxy any calls you make on it, to the
 	 *         LoadingLayouts included.
 	 */
-	ILoadingLayout getLoadingLayoutProxy(boolean includeStart, boolean includeEnd);
+	ILoadingLayout getLoadingLayoutProxy(bool includeStart, bool includeEnd);
 
 	/**
 	 * Get the mode that this view has been set to. If this returns
@@ -96,7 +111,7 @@ public:
 	 *
 	 * @return The View which is currently wrapped
 	 */
-	T getRefreshableView();
+	ListView getRefreshableView();
 
 	/**
 	 * Get whether the 'Refreshing' View should be automatically shown when
@@ -176,21 +191,21 @@ public:
 	 *            propogate.
 	 */
 
-	void setOnPullEventListener(OnPullEventListener<T> listener);
+	void setOnPullEventListener(OnPullEventListener listener);
 
 	/**
 	 * Set OnRefreshListener for the Widget
 	 *
 	 * @param listener - Listener to be used when the Widget is set to Refresh
 	 */
-	void setOnRefreshListener(OnRefreshListener<T> listener);
+	void setOnRefreshListener(OnRefreshListener listener);
 
 	/**
 	 * Set OnRefreshListener for the Widget
 	 *
 	 * @param listener - Listener to be used when the Widget is set to Refresh
 	 */
-	void setOnRefreshListener(OnRefreshListener2<T> listener);
+	void setOnRefreshListener(OnRefreshListener2 listener);
 
 	/**
 	 * Sets whether Overscroll support is enabled. This is different to
@@ -241,5 +256,6 @@ public:
 	 */
 	void setShowViewWhileRefreshing(bool showView);
 
-}
+
+};
 
