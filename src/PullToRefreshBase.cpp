@@ -36,7 +36,7 @@ using namespace Tizen::Ui::Animations;
 using namespace Tizen::Base::Runtime;
 
 //public abstract class PullToRefreshBase<T extends View> extends LinearLayout implements IPullToRefresh<T>
-class PullToRefreshBase : public IPullToRefresh,public PullToRefresh
+class PullToRefreshBase : public IPullToRefresh
 {
 
 public:
@@ -70,24 +70,24 @@ public:
 
 	//4. context, Mode, AnimationStyle -> public static enum (in here)
 
-	//PullToRefreshBase(Context context) {
-	PullToRefreshBase() {
+	PullToRefreshBase(){}
 
-		 init();
-	}
-
-	PullToRefreshBase(AnimationStyle animStyle) {
-
+	//form의 크기
+	void PullToRefreshBase::Construct(Tizen::Ui::Control& FormInstance)
+	{
 		mMode = Mode::PULL_FROM_START;
-		mLoadingAnimationStyle = animStyle;
-		init();
-	}
+		mLoadingAnimationStyle = AnimationStyle::ROTATE;
 
+		int formheight = FormInstance->GetHeight();
+		int formwidth = FormInstance->GetWidth();
+
+		init(formwidth, formheight);
+	}
 
 	//@override
 	const Mode getCurrentMode()
 	{
-		return mCurrnetMode;
+		return mCurrentMode;
 	}
 
 	//@override
@@ -455,7 +455,7 @@ protected:
 
 
 	//param : context, attrs
-	virtual ListView createRefreshableView();
+	virtual ListView createRefreshableView(int width, int height);
 
 	const void disableLoadingLayoutVisibilityChanges() {
 		mLayoutVisibilityChangesEnabled = false;
@@ -805,7 +805,7 @@ private:
 	//인자 : Context, AttributeSet
 	 //AttributeSet : xml문서의 태그에서 찾아서 쓰는 tag attributeSet !! xml 문서가 있어야 된다.
 	#pragma warning(disable) //@SuppressWarnings("deprecation")   //경고 안뜨게 하려고
-	void init()
+	void init(int formwidth, int formheight)
 	{
 		//orientation = Vertical 하나만 지원하기로 함
 
@@ -826,7 +826,12 @@ private:
 		mLoadingAnimationStyle = mLoadingAnimationStyle.getDefault;
 
 		mRefreshableViewWrapper = new Panel();
-		mRefreshableViewWrapper->Construct(FORM_STYLE_NORMAL);
+		mRefreshableViewWrapper->Construct(Rectangle(0,0,formwidth, formheight));
+
+		int panelHeight;
+		int panelWidth;
+		panelHeight = mRefreshableViewWrapper->GetHeight();
+		panelWidth = mRefreshableViewWrapper->GetWidth();
 
 		// We need to create now layouts now
 		//param: context, Mode.PULL_FROM_START, a
@@ -838,7 +843,7 @@ private:
 		// By passing the attrs, we can add ListView/GridView params via XML
 		//여기서 ListView로 만들어야 되는데 attrs에서 어떤 것들을 넣어야 될지 더 자세히 알아보자
 		//param: attrs
-		mRefreshableView = createRefreshableView(); //PullToRefreshListView 에 있다.
+		mRefreshableView = createRefreshableView(panelWidth, panelHeight); //PullToRefreshListView 에 있다.
 		addRefreshableView(mRefreshableView);
 		verticalLayout->SetHorizontalAlignment(*mRefreshableView, LAYOUT_HORIZONTAL_ALIGN_CENTER);
 
