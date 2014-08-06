@@ -9,10 +9,6 @@
 #define ONSMOOTHSCROLLFINISHEDLISTENER_H_
 
 
-#include <FBase.h>
-#include <FUi.h>
-#include <FApp.h>
-
 class OnSmoothScrollFinishedListener{
 	virtual ~OnSmoothScrollFinishedListener(void);
 

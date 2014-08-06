@@ -8,17 +8,15 @@
 #ifndef ONREFRESHLISTENER_H_
 #define ONREFRESHLISTENER_H_
 
-#include <FUi.h>
-#include <IPullToRefresh.h>
-using namespace Tizen::Ui::Controls;
+class PullToRefreshBase;
 
-class PullToRefreshBase<ListView>;
+class OnRefreshListener {
 
-class OnRefreshListener{
-	virtual ~OnRefreshListener(void);
+	public:
+		virtual ~OnRefreshListener(){}
+		virtual void onRefresh(const PullToRefreshBase refreshView);
 
-	virtual void onRefresh(const PullToRefreshBase<ListView>& refreshView);
-};
+	};
 
 
 #endif /* ONREFRESHLISTENER_H_ */

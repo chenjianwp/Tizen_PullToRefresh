@@ -7,16 +7,13 @@
 
 #ifndef ONPULLEVENTLISTENER_H_
 #define ONPULLEVENTLISTENER_H_
-#include <FUi.h>
-#include <IPullToRefresh.h>
-using namespace Tizen::Ui::Controls;
 
-class PullToRefreshBase<ListView>;
+class PullToRefreshBase;
 
 class OnPullEventListener{
 	virtual ~OnPullEventListener(void);
 
-	virtual void onPullEvent(const PullToRefreshBase<ListView>& refreshView, State state, Mode direction);
+	virtual void onPullEvent(const PullToRefreshBase& refreshView, State state, Mode direction);
 };
 
 
