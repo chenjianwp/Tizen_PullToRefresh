@@ -5,7 +5,7 @@
  *      Author: kohun
  */
 
-
+#include <FApp.h>
 #include <FGraphics.h>
 #include "LoadingLayout.h"
 
@@ -17,11 +17,11 @@ using namespace Tizen::Ui;
 using namespace Tizen::Base;
 
 LoadingLayout::LoadingLayout(void)
-	: isAnimation(0)
-	, __pLoadingLayout(0)
+	: __pPanel(0)
 	, mHeaderText(0)
 	, mSubHeaderText(0)
 	, mHeaderImage(0)
+	, isAnimation(0)
 {
 
 }
@@ -30,96 +30,77 @@ LoadingLayout::~LoadingLayout(void)
 {
 
 }
-//result
-//LoadingLayout::Construct()
-//{
-//	result r = E_SUCCESS;
-//
-//	VerticalBoxLayout mInnerLayout;
-//	mInnerLayout.Construct(VERTICAL_DIRECTION_DOWNWARD);
-//
-//	__pLoadingLayout = new LoadingLayout();
-//
-//	__pLoadingLayout->Construct(mInnerLayout, Rectangle(0,0,GetClientAreaBounds().width, 350));
-//	{
-//		mHeaderText = new Label();
-//		mHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Header Text");
-//		mHeaderText->SetTextVerticalAlignment(ALIGNMENT_CENTER);
-//		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
-//		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
-//		__pLoadingLayout->AddControl(mHeaderText);
-//
-//		mSubHeaderText = new Label();
-//		mSubHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Sub Header Text");
-//		mSubHeaderText->SetTextVerticalAlignment(ALIGNMENT_CENTER);
-//		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
-//		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
-//		__pLoadingLayout->AddControl(mSubHeaderText);
-//
-////		VisualElement를 이용해서 초기화 하는 부분. VisualElement 애니메이션을 사용. -> Bitmap으로 초기화하는 부분이 없는듯.
-////		mHeaderImage = new VisualElement();
-////		mHeaderImage->Construct();
-////		mHeaderImage->SetBounds(FloatRectangle(10.0f, 10.0f, 10.0f, 10.0f));
-////		mHeaderImage->SetShowState(true);
-////		mHeaderImage->SetContentProvider(this);
-////
-////		GetVisualElement()->AttachChild(mHeaderImage);
-////		mHeaderImage->InvalidateRectangle(null);
-//
-//
-////		Label을 사용해서 BackGround Image를 넣어 초기화 하는 방법. UI Control 애니메이션을 사용.
-//		mHeaderImage = new Label();
-//
-//		AppResource* pAppResource = Application::GetInstance()->GetAppResource();
-//
-//		Bitmap* bitmap = pAppResource->GetBitmapN(L"mainmenu.png");
-//
-//		mHeaderImage->Construct(Rectangle(0,0, bitmap->GetWidth(), bitmap->GetHeight()),L"");
-//		mHeaderImage->SetBackgroundBitmap(*bitmap);
-//
-//		ParallelAnimationGroup aniGroup;
-//		RotateAnimation* ra = new RotateAnimation(1, 360, 1000, ANIMATION_INTERPOLATOR_LINEAR);
-//		aniGroup.AddAnimation(ANIMATION_TARGET_ROTATION, *ra);
-//
-//		mHeaderImage->GetControlAnimator()->SetAnimation(ANIMATION_TRIGGER_SHOW_STATE_CHANGE, &aniGroup);
-//		//mHeaderImage->GetControlAnimator()->StartUserAnimation(aniGroup);
-//	}
-//
-//
-//	//attrs에 저장되있던 속성들을 비교해서 같으면 초기값 설정하는 부분.
-//	//setBackground()
-//	//setTextApperance()
-//	//setSubTextAppearnace()
-//
-//	//setTextColor()
-//	//setSubTextColor()
-//	//getDrawable()
-//
-//	//user defined 이미지가 없으면 디폴트를 불러옴
-//
-//	//이미지를 세팅하고 높이/너비저장.
-//	//setLoadingDrawable()
-//
-//	//AddControl(__pPanel);
-//	AddControl(__pLoadingLayout);
-//	return E_SUCCESS;
-//}
 
+result
+LoadingLayout::Construct(Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup)
+{
+	result r = E_SUCCESS;
+
+	VerticalBoxLayout mInnerLayout;
+	mInnerLayout.Construct(VERTICAL_DIRECTION_DOWNWARD);
+
+	//__pLoadingLayout = new LoadingLayout();
+	__pPanel = new Panel();
+
+	//__pLoadingLayout->Construct(mInnerLayout, Rectangle(0,0,200, 350));
+	__pPanel->Construct(mInnerLayout, Rectangle(0,0,200, 350));
+	{
+		mHeaderText = new Label();
+		mHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Header Text");
+		mHeaderText->SetTextVerticalAlignment(ALIGNMENT_MIDDLE);
+		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
+		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
+		__pPanel->AddControl(mHeaderText);
+
+		mSubHeaderText = new Label();
+		mSubHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Sub Header Text");
+		mSubHeaderText->SetTextVerticalAlignment(ALIGNMENT_MIDDLE);
+		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
+		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
+		__pPanel->AddControl(mSubHeaderText);
+
+//		VisualElement를 이용해서 초기화 하는 부분. VisualElement 애니메이션을 사용. -> Bitmap으로 초기화하는 부분이 없는듯.
+//		mHeaderImage = new VisualElement();
+//		mHeaderImage->Construct();
+//		mHeaderImage->SetBounds(FloatRectangle(10.0f, 10.0f, 10.0f, 10.0f));
+//		mHeaderImage->SetShowState(true);
+//		mHeaderImage->SetContentProvider(this);
+//
+//		GetVisualElement()->AttachChild(mHeaderImage);
+//		mHeaderImage->InvalidateRectangle(null);
+
+
+//		Label을 사용해서 BackGround Image를 넣어 초기화 하는 방법. UI Control 애니메이션을 사용.
+		mHeaderImage = new Label();
+
+		AppResource* pAppResource = Application::GetInstance()->GetAppResource();
+
+		Bitmap* bitmap = pAppResource->GetBitmapN(L"mainmenu.png");
+
+		mHeaderImage->Construct(Rectangle(0,0, bitmap->GetWidth(), bitmap->GetHeight()),L"");
+		mHeaderImage->SetBackgroundBitmap(*bitmap);
+		mHeaderImage->GetControlAnimator()->SetAnimation(ANIMATION_TRIGGER_SHOW_STATE_CHANGE, aniGroup);
+		__pPanel->AddControl(mHeaderImage);
+	}
+
+	AddControl(__pPanel);
+	return r;
+}
 
 int
 LoadingLayout::getContentSize()
 {
-	return __pLoadingLayout->GetHeight();
+	return __pPanel->GetHeight();
 }
 
 void
 LoadingLayout::hideAllViews()
 {
-	__pLoadingLayout->SetShowState(false);
+	__pPanel->SetShowState(false);
 	mHeaderText->SetShowState(false);
 	mSubHeaderText->SetShowState(false);
 	mHeaderImage->SetShowState(false);
-	__pLoadingLayout->Invalidate(true);
+	__pPanel->Invalidate(true);
 }
 
 void

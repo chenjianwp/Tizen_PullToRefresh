@@ -7,7 +7,7 @@
 
 #include <FApp.h>
 #include <FGraphics.h>
-#include "RotateLoadingLayout.h"
+#include <RotateLoadingLayout.h>
 
 using namespace Tizen::App;
 using namespace Tizen::Graphics;
@@ -96,7 +96,7 @@ RotateLoadingLayout::Construct()
 
 	//AddControl(__pPanel);
 	AddControl(__pLoadingLayout);
-	return r;
+	return E_SUCCESS;
 }
 
 void
@@ -136,7 +136,6 @@ RotateLoadingLayout::releaseToRefreshImpl(void)
 {
 
 }
-
 
 
 

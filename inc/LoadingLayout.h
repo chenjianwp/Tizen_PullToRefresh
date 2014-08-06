@@ -8,7 +8,7 @@
 #ifndef LOADINGLAYOUT_H_
 #define LOADINGLAYOUT_H_
 
-#include "ILoadingLayout.h"
+#include <ILoadingLayout.h>
 #include <FGraphics.h>
 #include <FUi.h>
 #include <FBase.h>
@@ -19,7 +19,9 @@ class LoadingLayout
 {
 public:
 	LoadingLayout(void);
-	~LoadingLayout(void);
+	virtual ~LoadingLayout(void);
+
+	result Construct(Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup);
 
 	int getContentSize();
 	void hideAllViews();
@@ -44,6 +46,7 @@ public:
 	 * Callbacks for derivative Layouts
 	 */
 protected:
+	virtual int getDefaultDrawableResId();
 	virtual void onLoadingDrawableSet(const Bitmap& imageBitmap);
 	virtual void onPullImpl(float scaleOfLayout);
 	virtual void pullToRefreshImpl();
@@ -57,13 +60,13 @@ protected:
 	void setTextAppearance(int value);
 	void setTextColor(Color& color);
 
-	bool isAnimation;
-
+private:
 	Tizen::Base::String mPullLabel;
 	Tizen::Base::String mRefreshingLabel;
 	Tizen::Base::String mReleaseLabel;
 
-	LoadingLayout* __pLoadingLayout;
+	//LoadingLayout* __pLoadingLayout;
+	Tizen::Ui::Controls::Panel* __pPanel;
 
 	Tizen::Ui::Controls::Label* mHeaderText;
 	Tizen::Ui::Controls::Label* mSubHeaderText;
@@ -71,7 +74,7 @@ protected:
 	//Tizen::Ui::Animations::VisualElement* mHeaderImage;
 	Tizen::Ui::Controls::Label* mHeaderImage;
 	//Android의 Attrs.xml에 정의된 내용들.
-
+	bool isAnimation;
 };
 
 
