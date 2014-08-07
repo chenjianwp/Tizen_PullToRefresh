@@ -17,7 +17,7 @@ using namespace Tizen::Ui;
 using namespace Tizen::Base;
 
 LoadingLayout::LoadingLayout(void)
-	: __pPanel(0)
+	: __pTableView(0)
 	, mHeaderText(0)
 	, mSubHeaderText(0)
 	, mHeaderImage(0)
@@ -39,25 +39,23 @@ LoadingLayout::Construct(Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup
 	VerticalBoxLayout mInnerLayout;
 	mInnerLayout.Construct(VERTICAL_DIRECTION_DOWNWARD);
 
-	//__pLoadingLayout = new LoadingLayout();
-	__pPanel = new Panel();
+	__pTableView = new TableView();
 
-	//__pLoadingLayout->Construct(mInnerLayout, Rectangle(0,0,200, 350));
-	__pPanel->Construct(mInnerLayout, Rectangle(0,0,200, 350));
+	__pTableView->Construct(Rectangle(0,0,200, 350),false,TABLE_VIEW_SCROLL_BAR_STYLE_THUMB);
 	{
 		mHeaderText = new Label();
 		mHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Header Text");
 		mHeaderText->SetTextVerticalAlignment(ALIGNMENT_MIDDLE);
 		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
 		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
-		__pPanel->AddControl(mHeaderText);
+		__pTableView->AddControl(mHeaderText);
 
 		mSubHeaderText = new Label();
 		mSubHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Sub Header Text");
 		mSubHeaderText->SetTextVerticalAlignment(ALIGNMENT_MIDDLE);
 		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
 		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
-		__pPanel->AddControl(mSubHeaderText);
+		__pTableView->AddControl(mSubHeaderText);
 
 //		VisualElement를 이용해서 초기화 하는 부분. VisualElement 애니메이션을 사용. -> Bitmap으로 초기화하는 부분이 없는듯.
 //		mHeaderImage = new VisualElement();
@@ -80,27 +78,28 @@ LoadingLayout::Construct(Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup
 		mHeaderImage->Construct(Rectangle(0,0, bitmap->GetWidth(), bitmap->GetHeight()),L"");
 		mHeaderImage->SetBackgroundBitmap(*bitmap);
 		mHeaderImage->GetControlAnimator()->SetAnimation(ANIMATION_TRIGGER_SHOW_STATE_CHANGE, aniGroup);
-		__pPanel->AddControl(mHeaderImage);
+		__pTableView->AddControl(mHeaderImage);
 	}
 
-	AddControl(__pPanel);
+	__pTableView->SetScrollEnabled(false);
+	AddControl(__pTableView);
 	return r;
 }
 
 int
 LoadingLayout::getContentSize()
 {
-	return __pPanel->GetHeight();
+	return __pTableView->GetHeight();
 }
 
 void
 LoadingLayout::hideAllViews()
 {
-	__pPanel->SetShowState(false);
+	__pTableView->SetShowState(false);
 	mHeaderText->SetShowState(false);
 	mSubHeaderText->SetShowState(false);
 	mHeaderImage->SetShowState(false);
-	__pPanel->Invalidate(true);
+	__pTableView->Invalidate(true);
 }
 
 void

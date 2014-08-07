@@ -15,7 +15,7 @@
 
 class LoadingLayout
 	: public ILoadingLayout
-	, public Tizen::Ui::Controls::Panel
+	, public Tizen::Ui::Controls::TableView
 {
 public:
 	LoadingLayout(void);
@@ -66,7 +66,7 @@ private:
 	Tizen::Base::String mReleaseLabel;
 
 	//LoadingLayout* __pLoadingLayout;
-	Tizen::Ui::Controls::Panel* __pPanel;
+	Tizen::Ui::Controls::TableView* __pTableView;
 
 	Tizen::Ui::Controls::Label* mHeaderText;
 	Tizen::Ui::Controls::Label* mSubHeaderText;
