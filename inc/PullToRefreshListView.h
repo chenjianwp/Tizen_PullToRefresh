@@ -8,7 +8,6 @@
 #ifndef PULLTOREFRESHLISTVIEW_H_
 #define PULLTOREFRESHLISTVIEW_H_
 
-#include "RotateLoadingLayout.h"
 #include "PullToRefreshBase.h"
 
 using namespace Tizen::Ui::Controls;
@@ -21,14 +20,19 @@ public:
 	virtual ~PullToRefreshListView(void);
 	result Construct(void);
 
-	virtual void onRefreshing(const boolean doScroll);
-	virtual void onReset();
-
 protected:
 	Tizen::Ui::Controls::ListView createListView(int width, int height);
 	virtual Tizen::Ui::Controls::ListView createRefreshableView(int width, int height);
 
+	void onRefreshing(const bool doScroll);
+	void onReset(void);
+	void onPullToRefresh(void);
+	void onReleaseToRefresh(void);
+
+	bool isReadyForPullStart(void);
+
 private:
+	bool isFirstItemVisible(void);
 	RotateLoadingLayout mHeaderLoadingView;
 	PullToRefreshListView mPullToRefreshListView;
 };

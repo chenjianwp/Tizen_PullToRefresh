@@ -38,7 +38,7 @@ PullToRefreshListView::Construct()
 void
 PullToRefreshListView::onRefreshing(const bool doScroll)
 {
-	PullToRefreshBase::onRefreshing(false);
+	PullToRefreshBase::onRefreshing(doScroll);
 
 	LoadingLayout origLoadingView, listViewloadingView, oppositeListViewLoadingView;
 
@@ -100,14 +100,40 @@ PullToRefreshListView::createRefreshableView(int width, int height)
 	return lv;
 }
 
+void
+PullToRefreshListView::onPullToRefresh(void)
+{
+	PullToRefreshBase::onPullToRefresh();
+}
 
+void
+PullToRefreshListView::onReleaseToRefresh(void)
+{
+	PullToRefreshBase::onReleaseToRefresh();
+}
 
+void
+PullToRefreshListView::onReset(void)
+{
+	PullToRefreshBase::onReset();
+}
 
+bool
+PullToRefreshListView::isReadyForPullStart(void)
+{
+	return isFirstItemVisible();
+}
 
-
-
-
-
+bool
+PullToRefreshListView::isFirstItemVisible(void)
+{
+	if(mRefreshableView->GetItemCount() == 0)
+	{
+		return true;
+	} else {
+		return false;
+	}
+}
 
 
 
