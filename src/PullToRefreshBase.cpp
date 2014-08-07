@@ -10,17 +10,18 @@
 using namespace std;
 using namespace Tizen::Ui;
 using namespace Tizen::Ui::Controls;
-using namespace Tizen::Ui::Controls::ListView;
-using namespace Tizen::Ui::Graphics;
+//using namespace Tizen::Ui::Controls::ListView;
+using namespace Tizen::Graphics;
 using namespace Tizen::Graphics;
 using namespace Tizen::Base;
-using namespace Tizen::Ui::VerticalBoxLayout;
+//using namespace Tizen::Ui::VerticalBoxLayout;
 using namespace Tizen::Media;
-using namespace Tizen::Ui::Container;
-using namespace Tizen::Ui::Controls::Panel;
-using namespace Tizen::Ui::Controls::IScrollEventListener;
-using namespace Tizen::Ui::ITouchEventListener;
-using namespace Tizen::Ui::TouchEventInfo;
+//using namespace Tizen::Ui::Container;
+//using namespace Tizen::Ui::Controls::Panel;
+//using namespace Tizen::Ui::Controls::IScrollEventListener;
+//using namespace Tizen::Ui::ITouchEventListener;
+//using namespace Tizen::Ui::TouchEventInfo;
+//using namespace Tizen::Ui::ITouchFlickGestureEventListener;
 using namespace Tizen::System;
 using namespace Tizen::Ui::Animations;
 using namespace Tizen::Base::Runtime;
@@ -45,11 +46,11 @@ using namespace Tizen::Base::Runtime;
 	void
 	PullToRefreshBase::Construct(Tizen::Ui::Control& FormInstance)
 	{
-		mMode = Mode::PULL_FROM_START;
-		mLoadingAnimationStyle = AnimationStyle::ROTATE;
+		mMode = Mode(0);
+		mLoadingAnimationStyle = AnimationSytle(0);
 
-		int formheight = FormInstance->GetHeight();
-		int formwidth = FormInstance->GetWidth();
+		int formheight = FormInstance.GetHeight();
+		int formwidth = FormInstance.GetWidth();
 
 		init(formwidth, formheight);
 	}
@@ -78,7 +79,7 @@ using namespace Tizen::Base::Runtime;
 
 	//@override
 	//
-	const ListView
+	const Tizen::Ui::Controls::ListView*
 	PullToRefreshBase::getRefreshableView()
 	{
 		return mRefreshableView;
@@ -108,7 +109,8 @@ using namespace Tizen::Base::Runtime;
 	//@Override
 	const bool
 	PullToRefreshBase::isRefreshing() {
-		return mState == State::REFRESHING || mState == State::MANUAL_REFRESHING;
+
+		return mState == State(3) || mState == State(4);
 	}
 
 	//@Override
@@ -125,20 +127,18 @@ using namespace Tizen::Base::Runtime;
 	const bool
 	PullToRefreshBase::onInterceptTouchEvent()
 	{
-		const TouchStatus action = touchinfo.GetTouchStatus();
-		Point position(0,0);
-		position = touchinfo.GetCurrentPosition();
+		Tizen::Ui::TouchStatus action = touchinfo.GetTouchStatus();
 
-		if (action == TouchStatus::TOUCH_CANCELED || flickdirection == "up") {
+		if (action == TOUCH_CANCELED || action == TOUCH_RELEASED  ) {
 			mIsBeingDragged = false;
 			return false;
 		}
 
-		if (flickdirection != "down" && mIsBeingDragged) {
+		if (action == TOUCH_PRESSED && mIsBeingDragged) {
 			return true;
 		}
 
-		if(action != TouchStatus::TOUCH_MOVED && flickdirection == "down")
+		if(action == TOUCH_PRESSED)
 		{
 			if (isReadyForPull()) {
 				mLastMotionY = mInitialMotionY = position.y;
@@ -146,7 +146,7 @@ using namespace Tizen::Base::Runtime;
 			}
 		}
 
-		if(action == TouchStatus::TOUCH_MOVED && flickdirection != "down" )
+		if(action == TOUCH_MOVED)
 		{
 			// If we're refreshing, and the flag is set. Eat all MOVE events
 			if (!mScrollingWhileRefreshingEnabled && isRefreshing()) {
@@ -155,7 +155,7 @@ using namespace Tizen::Base::Runtime;
 
 			if (isReadyForPull()) {
 				const float y = position.y, x = position.x;
-				const float diff, oppositeDiff, absDiff;
+				float diff, oppositeDiff, absDiff;
 
 				// We need to use the correct values, based on scroll
 				// direction
@@ -181,7 +181,7 @@ using namespace Tizen::Base::Runtime;
 	PullToRefreshBase::onRefreshComplete()
 	{
 		if (isRefreshing()) {
-			mState = State::RESET;
+			setState(State(0),false);
 		}
 
 	}
@@ -192,21 +192,56 @@ using namespace Tizen::Base::Runtime;
 	const bool
 	PullToRefreshBase::onTouchEvent()
 	{
-		Point position(0,0);
-		position = touchinfo.GetCurrentPosition();
+		Tizen::Ui::TouchStatus action = touchinfo.GetTouchStatus();
+		Tizen::Graphics::Point position;
 
 		// If we're refreshing, and the flag is set. Eat the event
 		if (!mScrollingWhileRefreshingEnabled && isRefreshing()) {
 			return true;
 		}
 
-		if(scrollendreach == false){
+		if(action==TOUCH_PRESSED){
 			return false;
 		}
 
-		if(scrollendreach == true){
+		if(action == TOUCH_MOVED)
+		{
+			if(mIsBeingDragged)
+			{
+				position = touchinfo.GetCurrentPosition();
+				mLastMotionY = position.y;
+				pullEvent();
+				return true;
+			}
+		}
+		if(action == TOUCH_PRESSED)
+		{
 			if (isReadyForPull()) {
+				position = touchinfo.GetCurrentPosition();
 				mLastMotionY = mInitialMotionY = position.y;
+				return true;
+			}
+		}
+
+		if(action == TOUCH_CANCELED || action == TOUCH_RELEASED)
+		{
+			if(mIsBeingDragged)
+			{
+				mIsBeingDragged = false;
+
+				if(mState == State(2) && (null != mOnRefreshListener))
+				{
+					setState(State(3),true);
+					return true;
+				}
+
+				if(isRefreshing())
+				{
+					smoothScrollTo(0);
+					return true;
+				}
+
+				setState(State(0), false);
 				return true;
 			}
 		}
@@ -239,7 +274,7 @@ using namespace Tizen::Base::Runtime;
 	void
 	PullToRefreshBase::setOnPullEventListener(OnPullEventListener listener)
 	{
-		mOnPullEventListener = listener;
+		mOnPullEventListener = &listener;
 	}
 
 	//@overrride
@@ -247,7 +282,7 @@ using namespace Tizen::Base::Runtime;
 	const void
 	PullToRefreshBase::setOnRefreshListener(OnRefreshListener listener)
 	{
-		mOnRefreshListener = listener;
+		mOnRefreshListener = &listener;
 	}
 
 	//@override
@@ -272,52 +307,46 @@ using namespace Tizen::Base::Runtime;
 	PullToRefreshBase::setRefreshing(bool doScroll)
 	{
 		if (!isRefreshing()) {
-			setState(State::MANUAL_REFRESHING, doScroll);
+			setState(State(4), doScroll);
 		}
 	}
 
 
 	const void
-	PullToRefreshBase::setState(State state, const bool...param)
+	PullToRefreshBase::setState(State state, const bool param)
 	{
 		mState = state;
 
-		if (DEBUG) {
-			Log.d(LOG_TAG, "State: " + mState.name());
-		}
+		if(mState == State(0))
+		{
+			onReset();
+		}else if(mState == State(1))
+		{
+			onPullToRefresh();
+		}else if(mState == State(2))
+		{
+			onReleaseToRefresh();
+		}else if(mState == State(3) || mState == State(4))
+		{
+			onRefreshing(param);
+		}else if(mState == State(5))
+		{
 
-		switch (mState) {
-			case RESET:
-				onReset();
-				break;
-			case PULL_TO_REFRESH:
-				onPullToRefresh();
-				break;
-			case RELEASE_TO_REFRESH:
-				onReleaseToRefresh();
-				break;
-			case REFRESHING:
-			case MANUAL_REFRESHING:
-				onRefreshing(params[0]);
-				break;
-			case OVERSCROLLING:
-				// NO-OP
-				break;
 		}
 
 		// Call OnPullEventListener
 		if (null != mOnPullEventListener) {
-			mOnPullEventListener.onPullEvent(this, mState, mCurrentMode);
+			mOnPullEventListener->onPullEvent(*this);
 		}
 	}
 
 	void
-	OnSmoothScrollFinishedListener::onSmoothScrollFinished()
+	PullToRefreshBase::SmoothScrollRunnable::onSmoothScrollFinished()
 	{
-		callRefreshListener();
+		pullto->callRefreshListener();
 	}
 
-	SmoothScrollRunnable::SmoothScrollRunnable(int fromY, int toY, long duration, OnSmoothScrollFinishedListener listener) {
+	PullToRefreshBase::SmoothScrollRunnable::SmoothScrollRunnable(int fromY, int toY, long duration, OnSmoothScrollFinishedListener* listener) {
 		mScrollFromY = fromY;
 		mScrollToY = toY;
 		mDuration = duration;
@@ -325,7 +354,7 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	Object*
-	SmoothScrollRunnable::Run() {
+	PullToRefreshBase::SmoothScrollRunnable::Run() {
 
 		/**
 		 * Only set mStartTime if this is the first time we're starting,
@@ -333,9 +362,9 @@ using namespace Tizen::Base::Runtime;
 		 */
 		if (mStartTime == -1) {
 
-			//mStartTime = System.currentTimeMillis();
 			SystemTime::GetCurrentTime(currentDateTime);
 			mStartTime = currentDateTime.GetMillisecond();
+
 		} else {
 
 			/**
@@ -360,13 +389,14 @@ using namespace Tizen::Base::Runtime;
 			this->Sleep(16);
 		} else {
 			if (null != mListener) {
-				mListener.onSmoothScrollFinished();
+				mListener->onSmoothScrollFinished();
 			}
 		}
 		return null;
 	}
 
-	SmoothScrollRunnable::stop()
+	void
+	PullToRefreshBase::SmoothScrollRunnable::stop()
 	{
 		mContinueRunning = false;
 		delete this;
@@ -379,7 +409,8 @@ using namespace Tizen::Base::Runtime;
 	 */
 
 	//param :Context context, Mode mode, TypedArray attrs
-	LoadingLayout
+
+	LoadingLayout*
 	PullToRefreshBase::createLoadingLayout()
 	{
 		rotatelayout->RotateLoadingLayout::Construct();
@@ -394,7 +425,7 @@ using namespace Tizen::Base::Runtime;
 		mLayoutVisibilityChangesEnabled = false;
 	}
 
-	const LoadingLayout
+	const LoadingLayout*
 	PullToRefreshBase::getHeaderLayout() {
 		return mHeaderLayout;
 	}
@@ -414,12 +445,10 @@ using namespace Tizen::Base::Runtime;
 		return SMOOTH_SCROLL_LONG_DURATION_MS;
 	}
 
-	Panel
+	Tizen::Ui::Controls::ScrollPanel*
 	PullToRefreshBase::getRefreshableViewWrapper() {
 		return mRefreshableViewWrapper;
 	}
-
-	 void PullToRefreshBase::onPtrSaveInstanceState() {}
 
 	 /**
 	 * Called when the UI has been to be updated to be in the
@@ -446,8 +475,8 @@ using namespace Tizen::Base::Runtime;
 			if (mShowViewWhileRefreshing) {
 
 				// Call Refresh Listener when the Scroll has finished
-				OnSmoothScrollFinishedListener listener = new OnSmoothScrollFinishedListener();
-				listener.onSmoothScrollFinished();
+				OnSmoothScrollFinishedListener *listener = new OnSmoothScrollFinishedListener();
+				listener->onSmoothScrollFinished();
 				//callRefreshListener();
 				smoothScrollTo(-getHeaderSize(), listener);
 
@@ -490,13 +519,9 @@ using namespace Tizen::Base::Runtime;
 	 //@override
 	 //header/ footer의 size 변경 하는 함수 .
 	 const void
-	 PullToRefreshBase::onSizeChanged(int w, int h, int oldw, int oldh)
+	 PullToRefreshBase::onSizeChanged(int w, int h)
 	 {
-		 if (DEBUG) {
-			Log.d(LOG_TAG, String.format("onSizeChanged. W: %d, H: %d", w, h));
-		}
-
-		 mRefreshableViewWrapper->onSizeChanged(w, h, oldw, oldh);
+		 mRefreshableViewWrapper->SetSize(w, h);
 
 		// We need to update the header/footer when our size changes
 		refreshLoadingViewsSize();
@@ -524,10 +549,6 @@ using namespace Tizen::Base::Runtime;
 		mHeaderLayout->SetSize(mHeaderLayout->GetWidth(), maximumPullScroll);
 		pTop = -maximumPullScroll;
 
-		if (DEBUG) {
-			Log.d(LOG_TAG, String.format("Setting Padding. L: %d, T: %d, R: %d, B: %d", pLeft, pTop, pRight, pBottom));
-		}
-
 		verticalLayout->SetSpacing(*mRefreshableView,pTop);
 	 }
 
@@ -554,7 +575,7 @@ using namespace Tizen::Base::Runtime;
 	 PullToRefreshBase::setHeaderScroll(int value)
 	 {
 		// Clamp value to with pull scroll range
-		const int maximumPullScroll = getMaximumPullScroll();
+		int maximumPullScroll = getMaximumPullScroll();
 		value = fmin(maximumPullScroll, fmax(-maximumPullScroll, value));
 
 		if (mLayoutVisibilityChangesEnabled) {
@@ -567,7 +588,7 @@ using namespace Tizen::Base::Runtime;
 			}
 		}
 
-		scrollTo(0, value);
+		mRefreshableViewWrapper->SetScrollPosition(value);
 
 	 }
 
@@ -591,7 +612,7 @@ using namespace Tizen::Base::Runtime;
 	 * @param listener - Listener for scroll
 	 */
 	 const void
-	 PullToRefreshBase::smoothScrollTo(int scrollValue, OnSmoothScrollFinishedListener listener)
+	 PullToRefreshBase::smoothScrollTo(int scrollValue, OnSmoothScrollFinishedListener* listener)
 	 {
 		 smoothScrollTo(scrollValue, getPullToRefreshScrollDuration(), 0, listener);
 	 }
@@ -635,7 +656,7 @@ using namespace Tizen::Base::Runtime;
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void
-	PullToRefreshBase::OnScrollEndReached(ListView& listview, ScrollEndEvent type){
+	PullToRefreshBase::OnScrollEndReached(Tizen::Ui::Controls::ListView& listview, Tizen::Ui::Controls::ScrollEndEvent type){
 
 		if(type == SCROLL_END_EVENT_END_TOP )
 		{
@@ -647,21 +668,21 @@ using namespace Tizen::Base::Runtime;
 	PullToRefreshBase::OnFlickGestureDetected(Tizen::Ui::TouchFlickGestureDetector& gestureDetector){
 
 		FlickDirection direction = gestureDetector.GetDirection();
-		switch(direction)
+
+		if(direction == FLICK_DIRECTION_UP)
 		{
-		case FLICK_DIRECTION_UP:
 			flickdirection = "up";
-			break;
-		case FLICK_DIRECTION_DOWN:
+
+		}else if(direction == FLICK_DIRECTION_DOWN)
+		{
 			flickdirection = "down";
-			break;
 		}
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void
-	PullToRefreshBase::addRefreshableView(ListView refreshableView)
+	PullToRefreshBase::addRefreshableView(Tizen::Ui::Controls::ListView* refreshableView)
 	 {
 		 mRefreshableViewWrapper->AddControl(refreshableView);
 	 }
@@ -672,7 +693,7 @@ using namespace Tizen::Base::Runtime;
 	 PullToRefreshBase::callRefreshListener()
 	 {
 		 if (null != mOnRefreshListener) {
-			mOnRefreshListener.onRefresh(this);
+			mOnRefreshListener->onRefresh(*this);
 		}
 	 }
 
@@ -681,10 +702,10 @@ using namespace Tizen::Base::Runtime;
 	void
 	PullToRefreshBase::init(int formwidth, int formheight)
 	{
-		mMode = mMode.getMode();
-		mLoadingAnimationStyle = mLoadingAnimationStyle.getDefault;
+		mMode = Enums::getMode();
+		mLoadingAnimationStyle = Enums::getAnimationStyle();
 
-		mRefreshableViewWrapper = new Panel();
+		mRefreshableViewWrapper = new ScrollPanel();
 		mRefreshableViewWrapper->Construct(Rectangle(0,0,formwidth, formheight));
 
 		int panelHeight;
@@ -706,11 +727,8 @@ using namespace Tizen::Base::Runtime;
 		addRefreshableView(mRefreshableView);
 		verticalLayout->SetHorizontalAlignment(*mRefreshableView, LAYOUT_HORIZONTAL_ALIGN_CENTER);
 
-		mRefreshableView->AddTouchEventListener(toucheventlistener);
-		mRefreshableView->AddScrollEventListener(scrollevetlistenr);
-
-		mRefreshableView->AddGestureDetector(flickgesture);
-		mRefreshableView->AddFlickGestureEventListener(flickgesturelistener);
+		mRefreshableViewWrapper->AddTouchEventListener(*this);
+		mRefreshableViewWrapper->AddScrollEventListener(*this);
 
 		//얘네는 아래에 구현
 		//Color background = Color(0,0,0,0);
@@ -738,9 +756,9 @@ using namespace Tizen::Base::Runtime;
 	 void
 	 PullToRefreshBase::pullEvent() {
 
-		const int newScrollValue;
-		const int itemDimension;
-		const float initialMotionValue, lastMotionValue;
+		int newScrollValue ;
+		int itemDimension;
+		float initialMotionValue, lastMotionValue;
 
 		initialMotionValue = mInitialMotionY;
 		lastMotionValue = mLastMotionY;
@@ -755,10 +773,10 @@ using namespace Tizen::Base::Runtime;
 
 			mHeaderLayout->LoadingLayout::onPull(scale);
 
-			if (mState != State::PULL_TO_REFRESH && itemDimension >= abs(newScrollValue)) {
-				setState(State::PULL_TO_REFRESH);
-			} else if (mState == State::PULL_TO_REFRESH && itemDimension < abs(newScrollValue)) {
-				setState(State::RELEASE_TO_REFRESH);
+			if (mState != State(1) && itemDimension >= abs(newScrollValue)) {
+				setState(State(1),false);
+			} else if (mState == State(1) && itemDimension < abs(newScrollValue)) {
+				setState(State(2),false);
 			}
 		}
 
@@ -792,14 +810,14 @@ using namespace Tizen::Base::Runtime;
 
 
 	const void
-	PullToRefreshBase::smoothScrollTo(int newScrollValue, long duration, long delayMillis,OnSmoothScrollFinishedListener listener) {
+	PullToRefreshBase::smoothScrollTo(int newScrollValue, long duration, long delayMillis,OnSmoothScrollFinishedListener* listener) {
 
 		if (null != mCurrentSmoothScrollRunnable) {
 
-			mCurrentSmoothScrollRunnable.stop();
+			mCurrentSmoothScrollRunnable->stop();
 		}
 
-		const int oldScrollValue;
+		int oldScrollValue;
 
 		oldScrollValue = scrollPosition;
 
@@ -808,9 +826,9 @@ using namespace Tizen::Base::Runtime;
 			mCurrentSmoothScrollRunnable = new SmoothScrollRunnable(oldScrollValue, newScrollValue, duration, listener);
 
 			if (delayMillis > 0) {
-				mCurrentSmoothScrollRunnable.Sleep(delayMillis);
+				mCurrentSmoothScrollRunnable->Sleep(delayMillis);
 			} else {
-				mCurrentSmoothScrollRunnable.Start();
+				mCurrentSmoothScrollRunnable->Start();
 			}
 		}
 	}
