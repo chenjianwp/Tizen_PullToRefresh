@@ -1,120 +1,29 @@
-/*
- * AnimationStyle.cpp
- *
- *  Created on: Jul 22, 2014
- *      Author: seungju
- */
 
-#include <LoadingLayout.h>
-#include<ListenerInterface.cpp>
+#include<Enums.h>
+#include<OnPullEventListener.h>
+#include<OnRefreshListener.h>
+#include<OnSmoothScrollFinishedListener.h>
 
+using namespace Tizen::Ui::Controls::ListView;
 
-	class Orientation
-	{
-
-	public:
-		static const Orientation VERTICAL;
-
-		static Orientation getOrientation()
-		{
-			return VERTICAL;
-		}
-
-	};
-
-
-	class AnimationStyle {
-
-	public:
-
-		static const AnimationStyle ROTATE = 0x0;
-
-		static AnimationStyle getDefault() {
-			return ROTATE;
-		}
-
-		static AnimationStyle mapIntToValue(int modeInt) {
-			switch (modeInt) {
-				case 0x0:
-				default:
-					return ROTATE;
-			}
-		}
-
-		LoadingLayout createLoadingLayout(Mode mode, Orientation scrollDirection) {
-			switch (this) {
-				case ROTATE:
-				default:
-					return new RotateLoadingLayout(context, mode, scrollDirection);
-				}
-		}
-
-	};
-
-	class State {
-
-	public:
-
-		static const State RESET =0x0;
-		static const State PULL_TO_REFRESH =0x1;
-		static const State RELEASE_TO_REFRESH =0x2;
-		static const State REFRESHING =0x8;
-		static const State MANUAL_REFRESHING =0x9;
-		static const State OVERSCROLLING =0x10;
-
-		static State mapIntToValue(const int stateInt) {
-
-				switch (stateInt) {
-					case 0x0:
-					default:
-						mIntValue = stateInt;
-						return RESET;
-					case 0x1:
-						mIntValue = stateInt;
-						return PULL_TO_REFRESH;
-					case 0x2:
-						mIntValue = stateInt;
-						return RELEASE_TO_REFRESH;
-					case 0x8:
-						mIntValue = stateInt;
-						return REFRESHING;
-					case 0x9:
-						mIntValue = stateInt;
-						return MANUAL_REFRESHING;
-					case 0x10:
-						mIntValue = stateInt;
-						return OVERSCROLLING;
-				}
-		}
-
-
-		int getIntValue() {
-			return mIntValue;
-		}
-
-	private:
-		int mIntValue;
-
-	};
-
-	class Mode {
-
-	public:
-
-		static const Mode PULL_FROM_START =0x1;
-
-		static Mode getMode() {
-			return PULL_FROM_START;
-		}
-
-
-		int getIntValue() {
-			return mIntValue;
-		}
-
-	private:
-		int mIntValue;
-
-
-	};
-
+class IPullToRefresh
+{
+public:
+	virtual ~IPullToRefresh(){}
+	virtual Mode getCurrentMode()=0;
+	virtual bool getFilterTouchEvents()=0;
+	virtual Mode getMode()=0;
+	virtual ListView getRefreshableView()=0;
+	virtual bool getShowViewWhileRefreshing()=0;
+	virtual void onRefreshComplete()=0;
+	virtual void onRefreshComplete()=0;
+	virtual void setFilterTouchEvents(bool filterEvents)=0;
+	virtual void setMode(Mode mode)=0;
+	virtual void setOnPullEventListener(OnPullEventListener listener)=0;
+	virtual void setOnRefreshListener(OnRefreshListener listener)=0;
+	virtual void setPullToRefreshOverScrollEnabled(bool enabled)=0;
+	virtual void setRefreshing()=0;
+	virtual void setRefreshing(bool doScroll)=0;
+	virtual void setScrollingWhileRefreshingEnabled(bool scrollingWhileRefreshingEnabled)=0;
+	virtual void setShowViewWhileRefreshing(bool showView)=0;
+};
