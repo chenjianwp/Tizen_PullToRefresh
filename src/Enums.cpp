@@ -7,19 +7,19 @@
 
 #include<Enums.h>
 
-static Orientation
+Orientation
 Orientation::getOrientation()
 {
 	return VERTICAL;
 }
 
-static AnimationStyle
+AnimationStyle
 AnimationStyle::getDefault()
 {
 	return ROTATE;
 }
 
-static AnimationStyle
+AnimationStyle
 AnimationStyle::mapIntToValue(int modeInt) {
 	switch (modeInt) {
 		case 0x0:
@@ -28,16 +28,17 @@ AnimationStyle::mapIntToValue(int modeInt) {
 	}
 }
 
-LoadingLayout
-AnimationStyle::createLoadingLayout(Mode mode, Orientation scrollDirection) {
-	switch (this) {
-		case ROTATE:
-		default:
-			return new RotateLoadingLayout(context, mode, scrollDirection);
-		}
+LoadingLayout*
+AnimationStyle::createLoadingLayout() {
+
+	RotateLoadingLayout *rotatelayout = new RotateLoadingLayout();
+	rotatelayout->Construct();
+	LoadingLayout *layout = rotatelayout;
+
+	return layout;
 }
 
-static State
+State
 State::mapIntToValue(const int stateInt) {
 
 		switch (stateInt) {
@@ -68,7 +69,7 @@ State::getIntValue() {
 		return mIntValue;
 }
 
-static Mode
+Mode
 Mode::getMode() {
 	return PULL_FROM_START;
 }

@@ -15,18 +15,18 @@ class Orientation
 
 public:
 	static const Orientation VERTICAL;
-	static Orientation getOrientation();
+	 Orientation getOrientation();
 };
 
 class AnimationStyle {
 
 public:
 
-	static const AnimationStyle ROTATE = 0x0;
+	static const AnimationStyle ROTATE;
 
-	static AnimationStyle getDefault();
-	static AnimationStyle mapIntToValue(int modeInt) ;
-	LoadingLayout createLoadingLayout(Mode mode, Orientation scrollDirection);
+	 AnimationStyle getDefault();
+	 AnimationStyle mapIntToValue(int modeInt) ;
+	LoadingLayout* createLoadingLayout();
 
 };
 
@@ -34,14 +34,14 @@ class State {
 
 public:
 
-	static const State RESET =0x0;
-	static const State PULL_TO_REFRESH =0x1;
-	static const State RELEASE_TO_REFRESH =0x2;
-	static const State REFRESHING =0x8;
-	static const State MANUAL_REFRESHING =0x9;
-	static const State OVERSCROLLING =0x10;
+	static const State RESET ;
+	static const State PULL_TO_REFRESH ;
+	static const State RELEASE_TO_REFRESH ;
+	static const State REFRESHING ;
+	static const State MANUAL_REFRESHING;
+	static const State OVERSCROLLING ;
 
-	static State mapIntToValue(const int stateInt);
+	State mapIntToValue(const int stateInt);
 	int getIntValue();
 
 private:
@@ -53,9 +53,9 @@ class Mode {
 
 public:
 
-	static const Mode PULL_FROM_START =0x1;
+	static const Mode PULL_FROM_START ;
 
-	static Mode getMode() ;
+	Mode getMode() ;
 	int getIntValue();
 
 private:
