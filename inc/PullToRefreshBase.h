@@ -12,13 +12,10 @@
 #include<OnPullEventListener.h>
 #include<OnRefreshListener.h>
 #include<OnSmoothScrollFinishedListener.h>
-#include<FlipLoadingLayout.cpp>
 #include<LoadingLayout.h>
 #include<RotateLoadingLayout.h>
-#include<Utils.cpp>
-#include<ViewCompat.cpp>
 #include<IPullToRefresh.h>
-#include<Enums.cpp>
+#include<Enums.h>
 #include<PullToRefreshListView.cpp>
 #include<cmath>
 
