@@ -8,6 +8,10 @@
 #ifndef PULLTOREFRESHBASE_H_
 #define PULLTOREFRESHBASE_H_
 
+#include<FBase.h>
+#include<FUi.h>
+#include<FUiControl.h>
+#include<FUiTouch.h>
 #include<FSystem.h>
 #include<OnLastItemVisibleListener.h>
 #include<OnPullEventListener.h>
@@ -23,9 +27,7 @@ class SmoothScrollRunnable;
 class PullToRefreshListView;
 
 class PullToRefreshBase
-	: public Tizen::Ui::Controls::IScrollEventListener
-	, public Tizen::Ui::ITouchFlickGestureEventListener
-	, public Tizen::Ui::Controls::ScrollPanel
+	: public Tizen::Ui::Controls::ScrollPanel
 	, public Tizen::Ui::TouchEventInfo
 	, public IPullToRefresh
 	, public Tizen::Ui::ITouchEventListener
@@ -33,6 +35,35 @@ class PullToRefreshBase
 	, public OnPullEventListener
 {
 public:
+
+	class SmoothScrollRunnable
+		: public Tizen::Base::Runtime::Thread
+		, public OnSmoothScrollFinishedListener
+		{
+		private:
+				 int mScrollToY;
+				 int mScrollFromY;
+				 long mDuration;
+				 OnSmoothScrollFinishedListener *mListener;
+				 PullToRefreshBase *pulltorefreshbase;
+				 bool mContinueRunning = true;
+				 int mStartTime = -1;
+				 int mCurrentY = -1;
+				 Tizen::Base::DateTime currentDateTime;
+
+		public:
+				virtual ~SmoothScrollRunnable(void){}
+
+				virtual void onSmoothScrollFinished(void);
+				result Construct(void){
+					return Thread::Construct();
+				}
+
+				SmoothScrollRunnable(int fromY, int toY, long duration, OnSmoothScrollFinishedListener* listener);
+
+				Object* Run();
+				void stop();
+		};
 
 	Tizen::Ui::Controls::ListView* mRefreshableView;
 	Tizen::Ui::VerticalBoxLayout* verticalLayout;
@@ -48,7 +79,6 @@ public:
 
 	SmoothScrollRunnable *mCurrentSmoothScrollRunnable;
 	Tizen::Ui::ITouchEventListener *toucheventlistener;
-	Tizen::Ui::Controls::IScrollEventListener *scrollevetlistener;
 	Tizen::Ui::TouchEventInfo touchinfo;
 
 	static const bool DEBUG = true;
@@ -67,11 +97,9 @@ public:
 
 	void Construct(Tizen::Ui::Control& FormInstance);
 	PullToRefreshBase(void);
+	PullToRefreshBase(const PullToRefreshBase& rhs){};
 	~PullToRefreshBase(void);
-	virtual void OnScrollEndReached(Tizen::Ui::Controls::ListView& listview, Tizen::Ui::Controls::ScrollEndEvent type);
-	virtual void OnScrollPositionChanged(Tizen::Ui::Controls::ListView& listview, int ScrollPosition);
-	virtual void  OnTouchReleased(const Tizen::Ui::Control& source, const Tizen::Graphics::Point& currentPosition, const Tizen::Ui::TouchEventInfo& touchInfo);
-	virtual void OnScrollPositionChanged(Tizen::Ui::Control& source, int scrollPosition);
+
 	virtual const Mode getCurrentMode();
 	virtual const bool getFilterTouchEvents();
 	virtual const Mode getMode();
@@ -100,7 +128,6 @@ protected:
 
 	LoadingLayout* createLoadingLayout();
 	virtual Tizen::Ui::Controls::ListView* createRefreshableView(int width, int height);
-	virtual void OnFlickGestureDetected(Tizen::Ui::TouchFlickGestureDetector& gestureDetector);
 	const void disableLoadingLayoutVisibilityChanges();
 	const LoadingLayout* getHeaderLayout();
 	const int getHeaderSize();
@@ -148,35 +175,6 @@ private:
 	const void smoothScrollTo(int scrollValue, long duration);
 	const void smoothScrollTo(int newScrollValue, long duration, long delayMillis,OnSmoothScrollFinishedListener* listener);
 
-public:
-	const class SmoothScrollRunnable
-		: public Tizen::Base::Runtime::Thread
-		, public OnSmoothScrollFinishedListener
-		{
-		private:
-				 int mScrollToY;
-				 int mScrollFromY;
-				 long mDuration;
-				 OnSmoothScrollFinishedListener *mListener;
-				// PullToRefreshBase *pullto;
-				 bool mContinueRunning = true;
-				 int mStartTime = -1;
-				 int mCurrentY = -1;
-				 Tizen::Base::DateTime currentDateTime;
-
-		public:
-				virtual ~SmoothScrollRunnable(void){}
-
-				virtual void onSmoothScrollFinished(void);
-				result Construct(void){
-					return Thread::Construct();
-				}
-
-				SmoothScrollRunnable(int fromY, int toY, long duration, OnSmoothScrollFinishedListener* listener);
-
-				Object* Run();
-				void stop();
-		};
 
 };
 
