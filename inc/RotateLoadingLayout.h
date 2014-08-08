@@ -26,7 +26,6 @@ protected:
 		void resetImageRotation();
 		void pullToRefreshImpl();
 		void releaseToRefreshImpl();
-		int getDefaultDrawableResId();
 
 private:
 		Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup;

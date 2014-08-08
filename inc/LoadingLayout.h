@@ -30,6 +30,7 @@ public:
 	void releaseToRefresh();
 	void reset();
 
+	//ILoadingLayout
 	void setLastUpdatedLabel(const String& label);
 	void setLoadingDrawable(Bitmap& imageBitmap);
 
@@ -44,13 +45,12 @@ public:
 	 * Callbacks for derivative Layouts
 	 */
 protected:
-	virtual int getDefaultDrawableResId();
-	virtual void onLoadingDrawableSet(const Bitmap& imageBitmap);
-	virtual void onPullImpl(float scaleOfLayout);
-	virtual void pullToRefreshImpl();
-	virtual void refreshingImpl();
-	virtual void releaseToRefreshImpl();
-	virtual void resetImpl();
+	virtual void onLoadingDrawableSet(const Bitmap& imageBitmap)=0;
+	virtual void onPullImpl(float scaleOfLayout=0)=0;
+	virtual void pullToRefreshImpl(void)=0;
+	virtual void refreshingImpl(void)=0;
+	virtual void releaseToRefreshImpl(void)=0;
+	virtual void resetImpl(void)=0;
 
 	void setSubHeaderText(String& label);
 	void setSubTextColor(Color& color);

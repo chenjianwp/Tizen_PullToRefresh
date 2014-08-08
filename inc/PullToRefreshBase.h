@@ -47,9 +47,9 @@ public:
 				 Tizen::Base::DateTime currentDateTime;
 
 		public:
-				virtual ~SmoothScrollRunnable(void){}
+				~SmoothScrollRunnable(void){}
 
-				virtual void onSmoothScrollFinished(void);
+				void onSmoothScrollFinished(void);
 
 				result Construct(void){
 					return Thread::Construct();
@@ -136,15 +136,14 @@ public:
 protected:
 
 	LoadingLayout* createLoadingLayout(void);
-	virtual Tizen::Ui::Controls::ListView* createRefreshableView(int width, int height);
+	virtual Tizen::Ui::Controls::ListView* createRefreshableView(int width, int height) = 0;
 	const void disableLoadingLayoutVisibilityChanges(void);
 	LoadingLayout* getHeaderLayout(void);
 	const int getHeaderSize(void);
 	int getPullToRefreshScrollDuration(void);
 	int getPullToRefreshScrollDurationLonger(void);
 	Tizen::Ui::Controls::ScrollPanel* getRefreshableViewWrapper(void);
-	virtual bool isReadyForPullEnd(void);
-	virtual bool isReadyForPullStart(void);
+	virtual bool isReadyForPullStart(void) = 0;
 	void onPtrRestoreInstanceState(void) {}
 	void onPtrSaveInstanceState(void) {}
 	void onPullToRefresh(void);

@@ -92,9 +92,3 @@ RotateLoadingLayout::releaseToRefreshImpl(void)
 
 
 
-
-
-
-
-
-
