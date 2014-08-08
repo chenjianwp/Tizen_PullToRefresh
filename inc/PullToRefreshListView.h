@@ -17,12 +17,13 @@ class PullToRefreshListView
 {
 public:
 	PullToRefreshListView(void);
+	PullToRefreshListView(const PullToRefreshListView& rhs){};
 	virtual ~PullToRefreshListView(void);
-	result Construct(void);
+	result Construct(Tizen::Ui::Control& FormInstance);
 
 protected:
-	Tizen::Ui::Controls::ListView createListView(int width, int height);
-	virtual Tizen::Ui::Controls::ListView createRefreshableView(int width, int height);
+	Tizen::Ui::Controls::ListView* createListView(int width, int height);
+	virtual Tizen::Ui::Controls::ListView* createRefreshableView(int width, int height);
 
 	void onRefreshing(const bool doScroll);
 	void onReset(void);
@@ -33,8 +34,8 @@ protected:
 
 private:
 	bool isFirstItemVisible(void);
-	RotateLoadingLayout mHeaderLoadingView;
-	PullToRefreshListView mPullToRefreshListView;
+	RotateLoadingLayout* mHeaderLoadingView;
+	PullToRefreshListView* mPullToRefreshListView;
 };
 
 #endif /* PULLTOREFRESHLISTVIEW_H_ */

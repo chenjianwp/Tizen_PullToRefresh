@@ -9,9 +9,7 @@
 #define LOADINGLAYOUT_H_
 
 #include <ILoadingLayout.h>
-#include <FGraphics.h>
 #include <FUi.h>
-#include <FBase.h>
 
 class LoadingLayout
 	: public ILoadingLayout
@@ -55,17 +53,15 @@ protected:
 	virtual void resetImpl();
 
 	void setSubHeaderText(String& label);
-	//void setSubTextAppearance(int value);
 	void setSubTextColor(Color& color);
 	void setTextAppearance(int value);
 	void setTextColor(Color& color);
 
-private:
+protected:
 	Tizen::Base::String mPullLabel;
 	Tizen::Base::String mRefreshingLabel;
 	Tizen::Base::String mReleaseLabel;
 
-	//LoadingLayout* __pLoadingLayout;
 	Tizen::Ui::Controls::TableView* __pTableView;
 
 	Tizen::Ui::Controls::Label* mHeaderText;
@@ -73,7 +69,6 @@ private:
 
 	//Tizen::Ui::Animations::VisualElement* mHeaderImage;
 	Tizen::Ui::Controls::Label* mHeaderImage;
-	//Android의 Attrs.xml에 정의된 내용들.
 	bool isAnimation;
 };
 

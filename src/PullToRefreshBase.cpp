@@ -150,11 +150,14 @@ using namespace Tizen::Base::Runtime;
 			if (isReadyForPull()) {
 				position = touchinfo.GetCurrentPosition();
 				const float y = position.y;
+				const float x = position.x;
+
 				float diff, oppositeDiff, absDiff;
 
 				// We need to use the correct values, based on scroll
 				// direction
 				diff = y - mLastMotionY;
+				oppositeDiff = x - mLastMotionX;
 
 				absDiff = abs((int)diff);
 
@@ -422,7 +425,7 @@ using namespace Tizen::Base::Runtime;
 		mLayoutVisibilityChangesEnabled = false;
 	}
 
-	const LoadingLayout*
+	LoadingLayout*
 	PullToRefreshBase::getHeaderLayout() {
 		return mHeaderLayout;
 	}
@@ -501,7 +504,7 @@ using namespace Tizen::Base::Runtime;
 	 * {@link State#RESET} state.
 	 */
 	void
-	PullToRefreshBase::onReset() {
+	PullToRefreshBase::onReset(void) {
 
 		mIsBeingDragged = false;
 		mLayoutVisibilityChangesEnabled = true;
@@ -766,8 +769,7 @@ using namespace Tizen::Base::Runtime;
 
 		int oldScrollValue;
 
-		int y = mRefreshableViewWrapper->GetScrollPosition();
-		oldScrollValue = y;
+		oldScrollValue = getScrollY();
 
 		if (oldScrollValue != newScrollValue) {
 
@@ -779,6 +781,13 @@ using namespace Tizen::Base::Runtime;
 				mCurrentSmoothScrollRunnable->Start();
 			}
 		}
+	}
+
+	int
+	PullToRefreshBase::getScrollY()
+	{
+		int y = mRefreshableViewWrapper->GetScrollPosition();
+		return y;
 	}
 
 

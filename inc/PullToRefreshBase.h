@@ -123,13 +123,14 @@ public:
 	const void setHeaderScroll(int value);
 	void callRefreshListener();
 	int getMaximumPullScroll();
+	int getScrollY(void);
 
 protected:
 
 	LoadingLayout* createLoadingLayout();
 	virtual Tizen::Ui::Controls::ListView* createRefreshableView(int width, int height);
 	const void disableLoadingLayoutVisibilityChanges();
-	const LoadingLayout* getHeaderLayout();
+	LoadingLayout* getHeaderLayout();
 	const int getHeaderSize();
 	int getPullToRefreshScrollDuration();
 	int getPullToRefreshScrollDurationLonger();
@@ -141,7 +142,7 @@ protected:
 	void onPullToRefresh();
 	void onRefreshing(const bool doScroll);
 	void onReleaseToRefresh();
-	void onReset();
+	void onReset(void);
 	const void onSizeChanged(int w, int h);
 	const void refreshLoadingViewsSize();
 	const void refreshRefreshableViewSize(int width, int height);

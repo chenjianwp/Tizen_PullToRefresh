@@ -6,7 +6,6 @@
  */
 
 #include <FApp.h>
-#include <FGraphics.h>
 #include "PullToRefreshListView.h"
 
 using namespace Tizen::App;
@@ -28,10 +27,10 @@ PullToRefreshListView::~PullToRefreshListView()
 }
 
 result
-PullToRefreshListView::Construct()
+PullToRefreshListView::Construct(Tizen::Ui::Control& FormInstance)
 {
-	r = E_SUCCESS;
-	PullToRefreshBase::Construct();
+	result r = E_SUCCESS;
+	PullToRefreshBase::Construct(FormInstance);
 	return r;
 }
 
@@ -40,25 +39,26 @@ PullToRefreshListView::onRefreshing(const bool doScroll)
 {
 	PullToRefreshBase::onRefreshing(doScroll);
 
-	LoadingLayout origLoadingView, listViewloadingView, oppositeListViewLoadingView;
+	LoadingLayout* origLoadingView;
+	LoadingLayout* listViewloadingView;
 
 	int selection, scrollToY;
 
 	origLoadingView = getHeaderLayout();
-	listViewLoadingLayout = mHeaderLoadingView;
+	listViewloadingView = mHeaderLoadingView;
 
 	selection = 0;
 
 	scrollToY = getScrollY() + getHeaderSize();
 
 	//Hide our original Loading View
-	origLoadingView.reset();
-	origLoadingView.hideAllViews();
+	origLoadingView->reset();
+	origLoadingView->hideAllViews();
 
 	//Show the ListView Loading View and set it to refresh.
-	listViewloadingView.SetShowState(true);
-	listViewloadingView.Invalidate(true);
-	listViewloadingView.refreshing();
+	listViewloadingView->SetShowState(true);
+	listViewloadingView->Invalidate(true);
+	listViewloadingView->refreshing();
 
 	if(doScroll)
 	{
@@ -70,32 +70,26 @@ PullToRefreshListView::onRefreshing(const bool doScroll)
 		setHeaderScroll(scrollToY);
 
 		//Make sure the ListView is scrolled to show the loading header
-		mRefreshableView.setSelection(selection);
+		mRefreshableView->ScrollToItem(selection);
 
 		//Smooth scroll as normal
 		smoothScrollTo(0);
 	}
 }
 
-void
-PullToRefreshListView::onReset()
-{
-	PullToRefreshBase::onReset();
-}
-
-Tizen::Ui::Controls::ListView
+Tizen::Ui::Controls::ListView*
 PullToRefreshListView::createListView(int width, int height)
 {
-	Tizen::Ui::Controls::ListView lv = new ListView();
-	lv.Construct(Rectangle(0,0,width,height),SCROLL_STYLE_THUMB);
+	Tizen::Ui::Controls::ListView* lv = new ListView();
+	lv->Construct(Rectangle(0,0,width,height),SCROLL_STYLE_THUMB);
 
 	return lv;
 }
 
-Tizen::Ui::Controls::ListView
+Tizen::Ui::Controls::ListView*
 PullToRefreshListView::createRefreshableView(int width, int height)
 {
-	Tizen::Ui::Controls::ListView lv = createListView(width, height);
+	Tizen::Ui::Controls::ListView* lv = createListView(width, height);
 
 	return lv;
 }

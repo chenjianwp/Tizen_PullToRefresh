@@ -10,58 +10,39 @@
 
 #include <RotateLoadingLayout.h>
 
-class Orientation
+enum Orientation
 {
-
-public:
-	static const Orientation VERTICAL;
-	 Orientation getOrientation();
+	_VERTICAL = 0
 };
 
-class AnimationStyle {
+enum AnimationSytle
+{
+	_ROTATE = 0
+};
 
+enum State
+{
+	RESET =0,
+	PULL_TO_REFRESH =1,
+	RELEASE_TO_REFRESH =2,
+	REFRESHING =3,
+	MANUAL_REFRESHING=4,
+	OVERSCROLLING=5
+};
+
+enum Mode
+{
+	PULL_FROM_START=0
+};
+
+class Enums
+{
 public:
-
-	static const AnimationStyle ROTATE;
-
-	 AnimationStyle getDefault();
-	 AnimationStyle mapIntToValue(int modeInt) ;
+	static Orientation getOrientation();
+	static AnimationSytle getAnimationStyle();
 	LoadingLayout* createLoadingLayout();
-
+	static Mode getMode() ;
 };
 
-class State {
-
-public:
-
-	static const State RESET ;
-	static const State PULL_TO_REFRESH ;
-	static const State RELEASE_TO_REFRESH ;
-	static const State REFRESHING ;
-	static const State MANUAL_REFRESHING;
-	static const State OVERSCROLLING ;
-
-	State mapIntToValue(const int stateInt);
-	int getIntValue();
-
-private:
-	int mIntValue;
-
-};
-
-class Mode {
-
-public:
-
-	static const Mode PULL_FROM_START ;
-
-	Mode getMode() ;
-	int getIntValue();
-
-private:
-	int mIntValue;
-
-
-};
 
 #endif /* ENUMS_H_ */

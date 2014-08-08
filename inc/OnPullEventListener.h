@@ -11,9 +11,12 @@
 class PullToRefreshBase;
 
 class OnPullEventListener{
-	virtual ~OnPullEventListener(void);
 
-	virtual void onPullEvent(const PullToRefreshBase& refreshView, State state, Mode direction);
+public:
+
+	virtual ~OnPullEventListener(void){}
+
+	virtual void onPullEvent(PullToRefreshBase& refreshView);
 };
 
 

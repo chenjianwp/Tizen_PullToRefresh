@@ -10,6 +10,7 @@
 
 
 class OnLastItemVisibleListener{
+public:
 	virtual ~OnLastItemVisibleListener(void);
 
 	virtual void onLastItemVisible(void);

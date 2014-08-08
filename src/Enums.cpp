@@ -8,28 +8,23 @@
 #include<Enums.h>
 
 Orientation
-Orientation::getOrientation()
+Enums::getOrientation()
 {
-	return VERTICAL;
+	enum Orientation ori;
+	ori = _VERTICAL;
+	return ori;
 }
 
-AnimationStyle
-AnimationStyle::getDefault()
+AnimationSytle
+Enums::getAnimationStyle()
 {
-	return ROTATE;
-}
-
-AnimationStyle
-AnimationStyle::mapIntToValue(int modeInt) {
-	switch (modeInt) {
-		case 0x0:
-		default:
-			return ROTATE;
-	}
+	enum AnimationSytle ani;
+	ani = _ROTATE;
+	return ani;
 }
 
 LoadingLayout*
-AnimationStyle::createLoadingLayout() {
+Enums::createLoadingLayout() {
 
 	RotateLoadingLayout *rotatelayout = new RotateLoadingLayout();
 	rotatelayout->Construct();
@@ -38,45 +33,13 @@ AnimationStyle::createLoadingLayout() {
 	return layout;
 }
 
-State
-State::mapIntToValue(const int stateInt) {
-
-		switch (stateInt) {
-			case 0x0:
-			default:
-				mIntValue = stateInt;
-				return RESET;
-			case 0x1:
-				mIntValue = stateInt;
-				return PULL_TO_REFRESH;
-			case 0x2:
-				mIntValue = stateInt;
-				return RELEASE_TO_REFRESH;
-			case 0x8:
-				mIntValue = stateInt;
-				return REFRESHING;
-			case 0x9:
-				mIntValue = stateInt;
-				return MANUAL_REFRESHING;
-			case 0x10:
-				mIntValue = stateInt;
-				return OVERSCROLLING;
-		}
-}
-
-int
-State::getIntValue() {
-		return mIntValue;
-}
-
 Mode
-Mode::getMode() {
-	return PULL_FROM_START;
+Enums::getMode() {
+	enum Mode mode;
+	mode = PULL_FROM_START;
+	return mode;
 }
 
-int
-Mode::getIntValue() {
-	return mIntValue;
-}
+
 
 
