@@ -23,7 +23,5 @@ public:
 	virtual const void setPullToRefreshOverScrollEnabled(bool enabled)=0;
 	virtual const void setRefreshing()=0;
 	virtual const void setRefreshing(bool doScroll)=0;
-	virtual void setScrollingWhileRefreshingEnabled(bool scrollingWhileRefreshingEnabled)=0;
-	virtual void setShowViewWhileRefreshing(bool showView)=0;
 };
 

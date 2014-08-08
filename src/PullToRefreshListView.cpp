@@ -14,20 +14,20 @@ using namespace Tizen::Ui;
 using namespace Tizen::Ui::Animations;
 using namespace Tizen::Ui::Controls;
 
-PullToRefreshListView::PullToRefreshListView()
+PullToRefreshListView::PullToRefreshListView(void)
 	: mHeaderLoadingView(0)
 	, mPullToRefreshListView(0)
 {
 
 }
 
-PullToRefreshListView::~PullToRefreshListView()
+PullToRefreshListView::~PullToRefreshListView(void)
 {
 
 }
 
 result
-PullToRefreshListView::Construct(Tizen::Ui::Control& FormInstance)
+PullToRefreshListView::Construct(Tizen::Ui::Controls::Form& FormInstance)
 {
 	result r = E_SUCCESS;
 	PullToRefreshBase::Construct(FormInstance);

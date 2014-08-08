@@ -13,9 +13,6 @@
 #include<FUiControl.h>
 #include<FUiTouch.h>
 #include<FSystem.h>
-#include<OnLastItemVisibleListener.h>
-#include<OnPullEventListener.h>
-#include<OnRefreshListener.h>
 #include<OnSmoothScrollFinishedListener.h>
 #include<LoadingLayout.h>
 #include<RotateLoadingLayout.h>
@@ -31,8 +28,6 @@ class PullToRefreshBase
 	, public Tizen::Ui::TouchEventInfo
 	, public IPullToRefresh
 	, public Tizen::Ui::ITouchEventListener
-	, public OnRefreshListener
-	, public OnPullEventListener
 {
 public:
 
@@ -55,14 +50,15 @@ public:
 				virtual ~SmoothScrollRunnable(void){}
 
 				virtual void onSmoothScrollFinished(void);
+
 				result Construct(void){
 					return Thread::Construct();
 				}
 
 				SmoothScrollRunnable(int fromY, int toY, long duration, OnSmoothScrollFinishedListener* listener);
 
-				Object* Run();
-				void stop();
+				Object* Run(void);
+				void stop(void);
 		};
 
 	Tizen::Ui::Controls::ListView* mRefreshableView;
@@ -79,7 +75,8 @@ public:
 
 	SmoothScrollRunnable *mCurrentSmoothScrollRunnable;
 	Tizen::Ui::ITouchEventListener *toucheventlistener;
-	Tizen::Ui::TouchEventInfo touchinfo;
+	Tizen::Ui::TouchStatus _touchinfo;
+	Tizen::Graphics::Point _touchposition;
 
 	static const bool DEBUG = true;
 	static const bool USE_HW_LAYER = false;
@@ -95,53 +92,64 @@ public:
 	bool mOverScrollEnabled = true;
 	bool mLayoutVisibilityChangesEnabled = true;
 
-	void Construct(Tizen::Ui::Control& FormInstance);
+	//Life-Cycle
+	void Construct(Tizen::Ui::Controls::Form& FormInstance);
 	PullToRefreshBase(void);
 	PullToRefreshBase(const PullToRefreshBase& rhs){};
 	~PullToRefreshBase(void);
 
-	virtual const Mode getCurrentMode();
-	virtual const bool getFilterTouchEvents();
-	virtual const Mode getMode();
-	virtual const Tizen::Ui::Controls::ListView* getRefreshableView();
-	virtual const bool getShowViewWhileRefreshing();
-	const State getState();
-	const bool isDisableScrollingWhileRefreshing();
-	const bool isRefreshing();
-	const bool isScrollingWhileRefreshingEnabled();
-	const bool onInterceptTouchEvent();
-	virtual const void onRefreshComplete();
-	const bool onTouchEvent();
+	//IPullToRefresh
+	virtual const Mode getCurrentMode(void);
+	virtual const bool getFilterTouchEvents(void);
+	virtual const Mode getMode(void);
+	virtual const Tizen::Ui::Controls::ListView* getRefreshableView(void);
+	virtual const bool getShowViewWhileRefreshing(void);
+	virtual const void onRefreshComplete(void);
 	virtual const void setFilterTouchEvents(bool filterEvents);
-	virtual const void setMode(Mode mode);
-	void setOnPullEventListener(OnPullEventListener listener);
+	virtual const void setRefreshing(void);
+	virtual const void setRefreshing(bool doScroll);
 	virtual const void setOnRefreshListener(OnRefreshListener listener);
 	virtual const void setPullToRefreshOverScrollEnabled(bool enabled);
-	virtual const void setRefreshing();
-	virtual const void setRefreshing(bool doScroll);
+	virtual const void setMode(Mode mode);
+	void setOnPullEventListener(OnPullEventListener listener);
+
+	//ITouchEventListener
+	virtual void OnTouchCanceled (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo);
+	virtual void OnTouchFocusIn (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo){}
+	virtual void OnTouchFocusOut (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo){}
+	virtual void OnTouchMoved (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo);
+	virtual void OnTouchPressed (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo);
+	virtual void OnTouchReleased (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo);
+
+	const State getState(void);
+	const bool isDisableScrollingWhileRefreshing(void);
+	const bool isRefreshing(void);
+	const bool isScrollingWhileRefreshingEnabled(void);
+	const bool onInterceptTouchEvent(void);
+	const bool onTouchEvent(void);
 	const void setState(State state, const bool param);
 	const void setHeaderScroll(int value);
-	void callRefreshListener();
-	int getMaximumPullScroll();
+	void callRefreshListener(void);
+	int getMaximumPullScroll(void);
 	int getScrollY(void);
 
 protected:
 
-	LoadingLayout* createLoadingLayout();
+	LoadingLayout* createLoadingLayout(void);
 	virtual Tizen::Ui::Controls::ListView* createRefreshableView(int width, int height);
-	const void disableLoadingLayoutVisibilityChanges();
-	LoadingLayout* getHeaderLayout();
-	const int getHeaderSize();
-	int getPullToRefreshScrollDuration();
-	int getPullToRefreshScrollDurationLonger();
-	Tizen::Ui::Controls::ScrollPanel* getRefreshableViewWrapper();
-	virtual bool isReadyForPullEnd();
-	virtual bool isReadyForPullStart();
-	void onPtrRestoreInstanceState() {}
-	void onPtrSaveInstanceState() {}
-	void onPullToRefresh();
+	const void disableLoadingLayoutVisibilityChanges(void);
+	LoadingLayout* getHeaderLayout(void);
+	const int getHeaderSize(void);
+	int getPullToRefreshScrollDuration(void);
+	int getPullToRefreshScrollDurationLonger(void);
+	Tizen::Ui::Controls::ScrollPanel* getRefreshableViewWrapper(void);
+	virtual bool isReadyForPullEnd(void);
+	virtual bool isReadyForPullStart(void);
+	void onPtrRestoreInstanceState(void) {}
+	void onPtrSaveInstanceState(void) {}
+	void onPullToRefresh(void);
 	void onRefreshing(const bool doScroll);
-	void onReleaseToRefresh();
+	void onReleaseToRefresh(void);
 	void onReset(void);
 	const void onSizeChanged(int w, int h);
 	const void refreshLoadingViewsSize();
@@ -149,7 +157,7 @@ protected:
 	const void smoothScrollTo(int scrollValue);
 	const void smoothScrollTo(int scrollValue, OnSmoothScrollFinishedListener* listener);
 	const void smoothScrollToLonger(int scrollValue);
-	void updateUIForMode();
+	void updateUIForMode(void);
 
 
 private:
@@ -171,8 +179,8 @@ private:
 
 	void addRefreshableView(Tizen::Ui::Controls::ListView* refreshableView);
 	void init(int formwidth, int formheight);
-	bool isReadyForPull();
-	void pullEvent();
+	bool isReadyForPull(void);
+	void pullEvent(void);
 	const void smoothScrollTo(int scrollValue, long duration);
 	const void smoothScrollTo(int newScrollValue, long duration, long delayMillis,OnSmoothScrollFinishedListener* listener);
 

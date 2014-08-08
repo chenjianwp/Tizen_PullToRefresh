@@ -36,7 +36,7 @@ using namespace Tizen::Base::Runtime;
 
 	//form의 크기
 	void
-	PullToRefreshBase::Construct(Tizen::Ui::Control& FormInstance)
+	PullToRefreshBase::Construct(Tizen::Ui::Controls::Form& FormInstance)
 	{
 		mMode = Mode(0);
 		mLoadingAnimationStyle = AnimationSytle(0);
@@ -49,14 +49,14 @@ using namespace Tizen::Base::Runtime;
 
 	//@override
 	const Mode
-	PullToRefreshBase::getCurrentMode()
+	PullToRefreshBase::getCurrentMode(void)
 	{
 		return mCurrentMode;
 	}
 
 	//@override
 	const bool
-	PullToRefreshBase::getFilterTouchEvents()
+	PullToRefreshBase::getFilterTouchEvents(void)
 	{
 		return mFilterTouchEvents;  //얘는 다른 파일에서 안보임. 더 찾아봐야 됨 true 값을 갖고 잇다.
 	}
@@ -64,7 +64,7 @@ using namespace Tizen::Base::Runtime;
 	//@Override
 	//
 	const Mode
-	PullToRefreshBase::getMode()
+	PullToRefreshBase::getMode(void)
 	{
 		return mMode;
 	}
@@ -72,42 +72,42 @@ using namespace Tizen::Base::Runtime;
 	//@override
 	//
 	const Tizen::Ui::Controls::ListView*
-	PullToRefreshBase::getRefreshableView()
+	PullToRefreshBase::getRefreshableView(void)
 	{
 		return mRefreshableView;
 	}
 
 	//@Override
 	const bool
-	PullToRefreshBase::getShowViewWhileRefreshing()
+	PullToRefreshBase::getShowViewWhileRefreshing(void)
 	{
 		return mShowViewWhileRefreshing;
 	}
 
 	//@Override
 	const State
-	PullToRefreshBase::getState()
+	PullToRefreshBase::getState(void)
 	{
 		return mState;
 	}
 
 	//@override
 	const bool
-	PullToRefreshBase::isDisableScrollingWhileRefreshing() {
+	PullToRefreshBase::isDisableScrollingWhileRefreshing(void) {
 		return !isScrollingWhileRefreshingEnabled();
 	}
 
 
 	//@Override
 	const bool
-	PullToRefreshBase::isRefreshing() {
+	PullToRefreshBase::isRefreshing(void) {
 
 		return mState == State(3) || mState == State(4);
 	}
 
 	//@Override
 	const bool
-	PullToRefreshBase::isScrollingWhileRefreshingEnabled() {
+	PullToRefreshBase::isScrollingWhileRefreshingEnabled(void) {
 		return mScrollingWhileRefreshingEnabled;
 	}
 
@@ -117,9 +117,9 @@ using namespace Tizen::Base::Runtime;
 	//param : MotionEvent event ->android 기능이다. 매칭되는 tizen을 찾아야 된다.
 	//IscrollEventListener -> OnScrollEndReachd() 함수에서 맨 위에 다다르면 하는 걸로
 	const bool
-	PullToRefreshBase::onInterceptTouchEvent()
+	PullToRefreshBase::onInterceptTouchEvent(void)
 	{
-		Tizen::Ui::TouchStatus action = touchinfo.GetTouchStatus();
+		Tizen::Ui::TouchStatus action = _touchinfo;
 		Tizen::Graphics::Point position;
 
 		if (action == TOUCH_CANCELED || action == TOUCH_RELEASED  ) {
@@ -134,7 +134,7 @@ using namespace Tizen::Base::Runtime;
 		if(action == TOUCH_PRESSED)
 		{
 			if (isReadyForPull()) {
-				position = touchinfo.GetCurrentPosition();
+				position = _touchposition;
 				mLastMotionY = mInitialMotionY = position.y;
 				mIsBeingDragged = false;
 			}
@@ -148,7 +148,7 @@ using namespace Tizen::Base::Runtime;
 			}
 
 			if (isReadyForPull()) {
-				position = touchinfo.GetCurrentPosition();
+				position = _touchposition;
 				const float y = position.y;
 				const float x = position.x;
 
@@ -176,7 +176,7 @@ using namespace Tizen::Base::Runtime;
 	//@override
 	//refreshing 다 되면 state를 reset state 로 바꿔서 정보들 새로 고치고 하는 함수 같다.
 	const void
-	PullToRefreshBase::onRefreshComplete()
+	PullToRefreshBase::onRefreshComplete(void)
 	{
 		if (isRefreshing()) {
 			setState(State(0),false);
@@ -188,9 +188,9 @@ using namespace Tizen::Base::Runtime;
 	//현재 scrollingEnabled 상태같은 것들을 보고 판단하면서
 	//사용자가 넣는 touchevent 가 어떤 event인지 판단하고 그것에 맞게 값을 바꿔나가는 함수인듯
 	const bool
-	PullToRefreshBase::onTouchEvent()
+	PullToRefreshBase::onTouchEvent(void)
 	{
-		Tizen::Ui::TouchStatus action = touchinfo.GetTouchStatus();
+		Tizen::Ui::TouchStatus action = _touchinfo;
 		Tizen::Graphics::Point position;
 
 		// If we're refreshing, and the flag is set. Eat the event
@@ -206,7 +206,7 @@ using namespace Tizen::Base::Runtime;
 		{
 			if(mIsBeingDragged)
 			{
-				position = touchinfo.GetCurrentPosition();
+				position = _touchposition;
 				mLastMotionY = position.y;
 				mLastMotionX = position.x;
 				pullEvent();
@@ -216,7 +216,7 @@ using namespace Tizen::Base::Runtime;
 		if(action == TOUCH_PRESSED)
 		{
 			if (isReadyForPull()) {
-				position = touchinfo.GetCurrentPosition();
+				position = _touchposition;
 				mLastMotionY = mInitialMotionY = position.y;
 				mLastMotionX = mInitialMotionX = position.x;
 				return true;
@@ -296,7 +296,7 @@ using namespace Tizen::Base::Runtime;
 	//@override
 	//인자 없음
 	const void
-	PullToRefreshBase::setRefreshing()
+	PullToRefreshBase::setRefreshing(void)
 	{
 		setRefreshing(true);
 	}
@@ -341,7 +341,7 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	void
-	PullToRefreshBase::SmoothScrollRunnable::onSmoothScrollFinished()
+	PullToRefreshBase::SmoothScrollRunnable::onSmoothScrollFinished(void)
 	{
 		pulltorefreshbase->callRefreshListener();
 	}
@@ -354,7 +354,7 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	Object*
-	PullToRefreshBase::SmoothScrollRunnable::Run() {
+	PullToRefreshBase::SmoothScrollRunnable::Run(void) {
 
 		/**
 		 * Only set mStartTime if this is the first time we're starting,
@@ -396,7 +396,7 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	void
-	PullToRefreshBase::SmoothScrollRunnable::stop()
+	PullToRefreshBase::SmoothScrollRunnable::stop(void)
 	{
 		mContinueRunning = false;
 		delete this;
@@ -411,7 +411,7 @@ using namespace Tizen::Base::Runtime;
 	//param :Context context, Mode mode, TypedArray attrs
 
 	LoadingLayout*
-	PullToRefreshBase::createLoadingLayout()
+	PullToRefreshBase::createLoadingLayout(void)
 	{
 		rotatelayout->RotateLoadingLayout::Construct();
 		LoadingLayout *layout = rotatelayout;
@@ -421,32 +421,32 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	const void
-	PullToRefreshBase::disableLoadingLayoutVisibilityChanges() {
+	PullToRefreshBase::disableLoadingLayoutVisibilityChanges(void) {
 		mLayoutVisibilityChangesEnabled = false;
 	}
 
 	LoadingLayout*
-	PullToRefreshBase::getHeaderLayout() {
+	PullToRefreshBase::getHeaderLayout(void) {
 		return mHeaderLayout;
 	}
 
 	const int
-	PullToRefreshBase::getHeaderSize() {
+	PullToRefreshBase::getHeaderSize(void) {
 		return mHeaderLayout->LoadingLayout::getContentSize();
 	}
 
 	int
-	PullToRefreshBase::getPullToRefreshScrollDuration() {
+	PullToRefreshBase::getPullToRefreshScrollDuration(void) {
 		return SMOOTH_SCROLL_DURATION_MS;
 	}
 
 	int
-	PullToRefreshBase::getPullToRefreshScrollDurationLonger() {
+	PullToRefreshBase::getPullToRefreshScrollDurationLonger(void) {
 		return SMOOTH_SCROLL_LONG_DURATION_MS;
 	}
 
 	Tizen::Ui::Controls::ScrollPanel*
-	PullToRefreshBase::getRefreshableViewWrapper() {
+	PullToRefreshBase::getRefreshableViewWrapper(void) {
 		return mRefreshableViewWrapper;
 	}
 
@@ -455,7 +455,7 @@ using namespace Tizen::Base::Runtime;
 	 * {@link State#PULL_TO_REFRESH} state.
 	 */
 	 void
-	 PullToRefreshBase::onPullToRefresh()
+	 PullToRefreshBase::onPullToRefresh(void)
 	 {
 		 mHeaderLayout->LoadingLayout::pullToRefresh();
 	 }
@@ -493,7 +493,7 @@ using namespace Tizen::Base::Runtime;
 	 * {@link State#RELEASE_TO_REFRESH} state.
 	 */
 	void
-	PullToRefreshBase::onReleaseToRefresh() {
+	PullToRefreshBase::onReleaseToRefresh(void) {
 
 		mHeaderLayout->LoadingLayout::releaseToRefresh(); //얘는 loading layout 에 있는 함수이다.
 
@@ -538,7 +538,7 @@ using namespace Tizen::Base::Runtime;
 	 //여기서 view는 listView인 것 같다.
 	 ///////////////////////////////////////////////////////////////////////////////////////////////padding - spacing
 	 const void
-	 PullToRefreshBase::refreshLoadingViewsSize()
+	 PullToRefreshBase::refreshLoadingViewsSize(void)
 	 {
 		const int maximumPullScroll = (int)(getMaximumPullScroll() * (float)1.2);
 
@@ -633,7 +633,7 @@ using namespace Tizen::Base::Runtime;
 	 * checking that the mode is different to current state so always updates.
 	 */
 	 void
-	 PullToRefreshBase::updateUIForMode()
+	 PullToRefreshBase::updateUIForMode(void)
 	 {
 		refreshLoadingViewsSize();
 	 }
@@ -648,7 +648,7 @@ using namespace Tizen::Base::Runtime;
 	 //현재 어떤 mOnRefreshListener가 사용중인가에 따라
 	 //또 mCurrentMode에 따라 적합한 mOnRefreshListener의 onRefresh 함수를 부르기 위한 설정
 	 void
-	 PullToRefreshBase::callRefreshListener()
+	 PullToRefreshBase::callRefreshListener(void)
 	 {
 		 if (null != mOnRefreshListener) {
 			mOnRefreshListener->onRefresh(*this);
@@ -698,7 +698,7 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	bool
-	PullToRefreshBase::isReadyForPull() {
+	PullToRefreshBase::isReadyForPull(void) {
 
 		return isReadyForPullStart();
 	}
@@ -710,7 +710,7 @@ using namespace Tizen::Base::Runtime;
 	 *         change
 	 */
 	 void
-	 PullToRefreshBase::pullEvent() {
+	 PullToRefreshBase::pullEvent(void) {
 
 		int newScrollValue ;
 		int itemDimension;
@@ -740,7 +740,7 @@ using namespace Tizen::Base::Runtime;
 
 
 	int
-	PullToRefreshBase::getMaximumPullScroll() {
+	PullToRefreshBase::getMaximumPullScroll(void) {
 
 		return round(mHeaderLayout->GetHeight() / FRICTION);
 	}
@@ -784,10 +784,40 @@ using namespace Tizen::Base::Runtime;
 	}
 
 	int
-	PullToRefreshBase::getScrollY()
+	PullToRefreshBase::getScrollY(void)
 	{
 		int y = mRefreshableViewWrapper->GetScrollPosition();
 		return y;
 	}
+
+	void
+	PullToRefreshBase::OnTouchCanceled (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo)
+	{
+		_touchinfo = touchInfo.GetTouchStatus();
+		_touchposition = touchInfo.GetCurrentPosition();
+	}
+
+	void
+	PullToRefreshBase::OnTouchMoved (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo)
+	{
+		_touchinfo = touchInfo.GetTouchStatus();
+		_touchposition = touchInfo.GetCurrentPosition();
+
+	}
+	void
+	PullToRefreshBase::OnTouchPressed (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo)
+	{
+		_touchinfo = touchInfo.GetTouchStatus();
+		_touchposition = touchInfo.GetCurrentPosition();
+
+	}
+
+	void
+	PullToRefreshBase::OnTouchReleased (const Tizen::Ui::Control &source, const Tizen::Graphics::Point &currentPosition, const Tizen::Ui::TouchEventInfo &touchInfo)
+	{
+		_touchinfo = touchInfo.GetTouchStatus();
+		_touchposition = touchInfo.GetCurrentPosition();
+	}
+
 
 

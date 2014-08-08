@@ -19,7 +19,7 @@ public:
 	PullToRefreshListView(void);
 	PullToRefreshListView(const PullToRefreshListView& rhs){};
 	virtual ~PullToRefreshListView(void);
-	result Construct(Tizen::Ui::Control& FormInstance);
+	result Construct(Tizen::Ui::Controls::Form& FormInstance);
 
 protected:
 	Tizen::Ui::Controls::ListView* createListView(int width, int height);
