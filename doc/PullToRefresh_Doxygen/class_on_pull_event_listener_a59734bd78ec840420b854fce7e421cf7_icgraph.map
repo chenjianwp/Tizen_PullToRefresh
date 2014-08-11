@@ -1,6 +1,0 @@
-<map id="OnPullEventListener::onPullEvent" name="OnPullEventListener::onPullEvent">
-<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#a1e4358faf0fb9133ed9353b75b66d744" title="PullToRefreshBase::\lsetState" alt="" coords="192,71,332,112"/>
-<area shape="rect" id="node3" href="$class_pull_to_refresh_base.html#a8361d659a374074e5e2e5efd9e52ceef" title="PullToRefreshBase::\lonRefreshComplete" alt="" coords="380,5,520,47"/>
-<area shape="rect" id="node4" href="$class_pull_to_refresh_base.html#a81220d7450b10661815c254c591a1cc2" title="PullToRefreshBase::\lsetRefreshing" alt="" coords="380,71,520,112"/>
-<area shape="rect" id="node5" href="$class_pull_to_refresh_base.html#aa14c767cb70c9bde6251874cf14cb6b7" title="PullToRefreshBase::\lOnTouchCanceled" alt="" coords="380,136,520,177"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="PullToRefreshBase::isScrollEnd" name="PullToRefreshBase::isScrollEnd">
-<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#a04987f7934950cb9f5302ceb4003ad34" title="PullToRefreshBase::\lonRefreshing" alt="" coords="193,5,333,47"/>
-<area shape="rect" id="node3" href="$class_pull_to_refresh_base.html#ad079d15c53893f79fb9d132cb1455b91" title="PullToRefreshBase::\lcallRefreshListener" alt="" coords="193,71,333,112"/>
-<area shape="rect" id="node4" href="$class_on_refresh_listener.html#a4b2eb1725dec76ca36ab2d4766070871" title="OnRefreshListener::\lonRefreshEvent" alt="" coords="381,71,519,112"/>
-</map>

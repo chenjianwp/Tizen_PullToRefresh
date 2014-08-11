@@ -1,5 +1,0 @@
-<map id="PullToRefreshBase::setMode" name="PullToRefreshBase::setMode">
-<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#a269a2a1873303dbc46287b6fff39fcca" title="PullToRefreshBase::\lupdateUIForMode" alt="" coords="193,5,333,47"/>
-<area shape="rect" id="node3" href="$class_pull_to_refresh_base.html#add48cd368dbe2557bf6f4d411821b259" title="PullToRefreshBase::\lrefreshLoadingViewsSize" alt="" coords="381,5,548,47"/>
-<area shape="rect" id="node4" href="$class_pull_to_refresh_base.html#a919ec1e23fddac6344903f751fe02411" title="PullToRefreshBase::\lgetMaximumPullScroll" alt="" coords="596,5,748,47"/>
-</map>
