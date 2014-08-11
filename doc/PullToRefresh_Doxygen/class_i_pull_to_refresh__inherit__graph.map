@@ -1,0 +1,4 @@
+<map id="IPullToRefresh" name="IPullToRefresh">
+<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html" title="PullToRefreshBase" alt="" coords="15,80,147,107"/>
+<area shape="rect" id="node3" href="$class_pull_to_refresh_list_view.html" title="PullToRefreshListView" alt="" coords="5,155,156,181"/>
+</map>

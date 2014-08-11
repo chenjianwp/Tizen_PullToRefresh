@@ -1,0 +1,5 @@
+<map id="PullToRefreshListView" name="PullToRefreshListView">
+<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html" title="PullToRefreshBase" alt="" coords="416,147,548,174"/>
+<area shape="rect" id="node4" href="$class_i_pull_to_refresh.html" title="IPullToRefresh" alt="" coords="209,71,315,98"/>
+<area shape="rect" id="node6" href="$class_on_smooth_scroll_finished_listener.html" title="OnSmoothScrollFinishedListener" alt="" coords="156,173,368,199"/>
+</map>

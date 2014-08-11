@@ -1,0 +1,22 @@
+/*
+ * OnSmoothScrollFinishedListener.h
+ *
+ *  Created on: Jul 22, 2014
+ *      Author: kohun
+ */
+
+#ifndef ONSMOOTHSCROLLFINISHEDLISTENER_H_
+#define ONSMOOTHSCROLLFINISHEDLISTENER_H_
+
+
+#include <FBase.h>
+#include <FUi.h>
+#include <FApp.h>
+
+class OnSmoothScrollFinishedListener{
+	virtual ~OnSmoothScrollFinishedListener(void);
+
+	virtual void OnSmoothScrollFinishedListener(void);
+};
+
+#endif /* ONSMOOTHSCROLLFINISHEDLISTENER_H_ */

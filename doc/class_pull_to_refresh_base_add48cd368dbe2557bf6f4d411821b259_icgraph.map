@@ -1,0 +1,5 @@
+<map id="PullToRefreshBase::refreshLoadingViewsSize" name="PullToRefreshBase::refreshLoadingViewsSize">
+<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#a8738853031cde04f04ee946e90ff677f" title="PullToRefreshBase::\lonSizeChanged" alt="" coords="220,5,360,47"/>
+<area shape="rect" id="node3" href="$class_pull_to_refresh_base.html#a269a2a1873303dbc46287b6fff39fcca" title="PullToRefreshBase::\lupdateUIForMode" alt="" coords="220,71,360,112"/>
+<area shape="rect" id="node4" href="$class_pull_to_refresh_base.html#a820e4294e8971979830397d89ba5f01f" title="PullToRefreshBase::\lsetMode" alt="" coords="408,71,548,112"/>
+</map>

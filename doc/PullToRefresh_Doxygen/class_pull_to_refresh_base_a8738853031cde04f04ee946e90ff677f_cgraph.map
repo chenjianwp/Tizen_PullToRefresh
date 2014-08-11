@@ -1,0 +1,5 @@
+<map id="PullToRefreshBase::onSizeChanged" name="PullToRefreshBase::onSizeChanged">
+<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#add48cd368dbe2557bf6f4d411821b259" title="PullToRefreshBase::\lrefreshLoadingViewsSize" alt="" coords="201,5,368,47"/>
+<area shape="rect" id="node4" href="$class_pull_to_refresh_base.html#a748ef890d326bfd6eade0534fd9cc9c6" title="PullToRefreshBase::\lrefreshRefreshableViewSize" alt="" coords="193,71,376,112"/>
+<area shape="rect" id="node3" href="$class_pull_to_refresh_base.html#a919ec1e23fddac6344903f751fe02411" title="PullToRefreshBase::\lgetMaximumPullScroll" alt="" coords="424,5,576,47"/>
+</map>

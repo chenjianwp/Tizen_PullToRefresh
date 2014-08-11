@@ -1,0 +1,4 @@
+<map id="RotateLoadingLayout::Construct" name="RotateLoadingLayout::Construct">
+<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#af21b220ac21c5986e187856c1f143527" title="PullToRefreshBase::\lcreateLoadingLayout" alt="" coords="201,5,344,47"/>
+<area shape="rect" id="node3" href="$class_pull_to_refresh_list_view.html#a046d971bd96eea719d60fb197e4e7f27" title="PullToRefreshListView\l::onRefreshing" alt="" coords="197,71,348,112"/>
+</map>

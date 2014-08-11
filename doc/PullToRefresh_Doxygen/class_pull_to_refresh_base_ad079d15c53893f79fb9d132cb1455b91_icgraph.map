@@ -1,0 +1,6 @@
+<map id="PullToRefreshBase::callRefreshListener" name="PullToRefreshBase::callRefreshListener">
+<area shape="rect" id="node2" href="$class_pull_to_refresh_base.html#a07932af6c211ec85fae63687e90726c9" title="PullToRefreshBase::\lonSmoothScrollFinished" alt="" coords="193,5,356,47"/>
+<area shape="rect" id="node3" href="$class_pull_to_refresh_base.html#acb58aa0f865f4583b86536ccca3f753f" title="PullToRefreshBase::\lisScrollEnd" alt="" coords="205,71,345,112"/>
+<area shape="rect" id="node4" href="$class_pull_to_refresh_base.html#af8ea188731a38158a5733f0ca58e4f37" title="PullToRefreshBase::\lOnScrollStopped" alt="" coords="404,37,544,79"/>
+<area shape="rect" id="node5" href="$class_pull_to_refresh_base.html#ab3172d713344a24a543f7d2b970a7786" title="PullToRefreshBase::\lOnTouchReleased" alt="" coords="404,103,544,144"/>
+</map>
