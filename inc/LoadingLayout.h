@@ -46,7 +46,7 @@ public:
 	 */
 protected:
 	virtual void onLoadingDrawableSet(const Bitmap& imageBitmap)=0;
-	virtual void onPullImpl(float scaleOfLayout=0)=0;
+	virtual void onPullImpl(float scaleOfLayout)=0;
 	virtual void pullToRefreshImpl(void)=0;
 	virtual void refreshingImpl(void)=0;
 	virtual void releaseToRefreshImpl(void)=0;

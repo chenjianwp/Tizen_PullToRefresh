@@ -30,21 +30,37 @@ using namespace Tizen::Base::Runtime;
 		,mHeaderLayout(0)
 		,rotatelayout(0)
 		,mOnRefreshListener(0)
-		,mOnPullEventListener(0){}
+		,mOnPullEventListener(0)
+		,mShowViewWhileRefreshing(true)
+		,mScrollingWhileRefreshingEnabled(false)
+		,mFilterTouchEvents(true)
+		,mOverScrollEnabled(true)
+		,mLayoutVisibilityChangesEnabled(true)
+		,mIsBeingDragged(false)
+	{
+
+	}
 
 	PullToRefreshBase::~PullToRefreshBase(void){}
 
 	//form의 크기
-	void
+	result
 	PullToRefreshBase::Construct(Tizen::Ui::Controls::Form& FormInstance)
 	{
+		result r = E_SUCCESS;
+
 		mMode = Mode(0);
 		mLoadingAnimationStyle = AnimationSytle(0);
 
 		int formheight = FormInstance.GetHeight();
 		int formwidth = FormInstance.GetWidth();
 
+		console.log(formheight);
+		console.log(formwidth);
+
 		init(formwidth, formheight);
+
+		return r;
 	}
 
 	//@override
@@ -280,9 +296,9 @@ using namespace Tizen::Base::Runtime;
 	//@overrride
 	//OnRefrshListener 객체 받아서 설정하는 것
 	const void
-	PullToRefreshBase::setOnRefreshListener(OnRefreshListener listener)
+	PullToRefreshBase::setOnRefreshListener(OnRefreshListener* listener)
 	{
-		mOnRefreshListener = &listener;
+		mOnRefreshListener = listener;
 	}
 
 	//@override
@@ -351,6 +367,10 @@ using namespace Tizen::Base::Runtime;
 		mScrollToY = toY;
 		mDuration = duration;
 		mListener = listener;
+		mContinueRunning = true;
+		mStartTime = -1;
+		mCurrentY = -1;
+
 	}
 
 	Object*
@@ -651,7 +671,7 @@ using namespace Tizen::Base::Runtime;
 	 PullToRefreshBase::callRefreshListener(void)
 	 {
 		 if (null != mOnRefreshListener) {
-			mOnRefreshListener->onRefresh(*this);
+			mOnRefreshListener->onRefresh(this);
 		}
 	 }
 
@@ -660,7 +680,9 @@ using namespace Tizen::Base::Runtime;
 	PullToRefreshBase::init(int formwidth, int formheight)
 	{
 		mMode = Enums::getMode();
+		console.log(mMode);
 		mLoadingAnimationStyle = Enums::getAnimationStyle();
+		console.log(mLoadingAnimationStyle);
 
 		mRefreshableViewWrapper = new ScrollPanel();
 		mRefreshableViewWrapper->Construct(Rectangle(0,0,formwidth, formheight));

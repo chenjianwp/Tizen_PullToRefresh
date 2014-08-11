@@ -39,11 +39,11 @@ public:
 				 int mScrollToY;
 				 int mScrollFromY;
 				 long mDuration;
+				 bool mContinueRunning;
+				 int mStartTime;
+				 int mCurrentY;
 				 OnSmoothScrollFinishedListener *mListener;
 				 PullToRefreshBase *pulltorefreshbase;
-				 bool mContinueRunning = true;
-				 int mStartTime = -1;
-				 int mCurrentY = -1;
 				 Tizen::Base::DateTime currentDateTime;
 
 		public:
@@ -86,14 +86,16 @@ public:
 	static const int SMOOTH_SCROLL_LONG_DURATION_MS=325;
 	static const int DEMO_SCROLL_INTERVAL = 225;
 
-	bool mShowViewWhileRefreshing = true;
-	bool mScrollingWhileRefreshingEnabled = false;
-	bool mFilterTouchEvents = true;
-	bool mOverScrollEnabled = true;
-	bool mLayoutVisibilityChangesEnabled = true;
+	bool mShowViewWhileRefreshing ;
+	bool mScrollingWhileRefreshingEnabled ;
+	bool mFilterTouchEvents ;
+	bool mOverScrollEnabled ;
+	bool mLayoutVisibilityChangesEnabled;
+
+	bool mIsBeingDragged ;
 
 	//Life-Cycle
-	void Construct(Tizen::Ui::Controls::Form& FormInstance);
+	result Construct(Tizen::Ui::Controls::Form& FormInstance);
 	PullToRefreshBase(void);
 	PullToRefreshBase(const PullToRefreshBase& rhs){};
 	~PullToRefreshBase(void);
@@ -108,7 +110,7 @@ public:
 	virtual const void setFilterTouchEvents(bool filterEvents);
 	virtual const void setRefreshing(void);
 	virtual const void setRefreshing(bool doScroll);
-	virtual const void setOnRefreshListener(OnRefreshListener listener);
+	virtual const void setOnRefreshListener(OnRefreshListener* listener);
 	virtual const void setPullToRefreshOverScrollEnabled(bool enabled);
 	virtual const void setMode(Mode mode);
 	void setOnPullEventListener(OnPullEventListener listener);
@@ -165,14 +167,12 @@ private:
 	float mLastMotionX, mLastMotionY;
 	float mInitialMotionX, mInitialMotionY;
 
-	bool mIsBeingDragged = false;
 	State mState ;
 	Mode mMode ;
 
 	Orientation mOrientation;
 	Mode mCurrentMode;
 
-	bool scrollendreach = false;
 	Tizen::Base::String flickdirection;
 	int scrollPosition;
 

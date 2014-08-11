@@ -14,7 +14,7 @@ class OnRefreshListener {
 
 	public:
 		virtual ~OnRefreshListener(){}
-		virtual void onRefresh(const PullToRefreshBase refreshView);
+		virtual void onRefresh(PullToRefreshBase* refreshView)=0;
 
 	};
 

@@ -19,7 +19,7 @@ public:
 	virtual const void setFilterTouchEvents(bool filterEvents)=0;
 	virtual const void setMode(Mode mode)=0;
 	virtual void setOnPullEventListener(OnPullEventListener listener)=0;
-	virtual const void setOnRefreshListener(OnRefreshListener listener)=0;
+	virtual const void setOnRefreshListener(OnRefreshListener* listener)=0;
 	virtual const void setPullToRefreshOverScrollEnabled(bool enabled)=0;
 	virtual const void setRefreshing()=0;
 	virtual const void setRefreshing(bool doScroll)=0;

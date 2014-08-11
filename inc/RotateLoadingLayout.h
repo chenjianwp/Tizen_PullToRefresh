@@ -21,11 +21,11 @@ public:
 
 protected:
 		void onPullImpl(float scaleOfLayout);
-		void refreshingImpl();
-		void resetImpl();
-		void resetImageRotation();
-		void pullToRefreshImpl();
-		void releaseToRefreshImpl();
+		void refreshingImpl(void);
+		void resetImpl(void);
+		void resetImageRotation(void);
+		void pullToRefreshImpl(void);
+		void releaseToRefreshImpl(void);
 
 private:
 		Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup;
