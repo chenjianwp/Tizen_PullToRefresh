@@ -70,7 +70,7 @@ public:
 	LoadingLayout *mHeaderLayout;
 	RotateLoadingLayout *rotatelayout;
 
-	OnRefreshListener *mOnRefreshListener; //이것은 한방향으로 pull 되는거
+	OnRefreshListener *mOnRefreshListener; 
 	OnPullEventListener *mOnPullEventListener;
 
 	SmoothScrollRunnable *mCurrentSmoothScrollRunnable;
@@ -80,8 +80,7 @@ public:
 
 	static const bool DEBUG = true;
 	static const bool USE_HW_LAYER = false;
-	//static const Tizen::Base::String LOG_TAG = "PullToRefresh";
-	static const float FRICTION = 2.0f;  //마찰력
+	static const float FRICTION = 2.0f;  
 	static const int SMOOTH_SCROLL_DURATION_MS = 200;
 	static const int SMOOTH_SCROLL_LONG_DURATION_MS=325;
 	static const int DEMO_SCROLL_INTERVAL = 225;
