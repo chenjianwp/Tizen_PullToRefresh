@@ -20,10 +20,15 @@ of your Tizen application Project.
 
 
 ->  PullToRefreshListView* listview = new PullToRefreshListView();
+
   	listview->Construct(*this);
+  	
   	listview->getRefreshableView()->SetItemProvider(*this);
+  	
   	listview->setOnPullEventListener(*this);
+  	
   	listview->setOnRefreshListener(*this);
+  	
   	
   	
   	
