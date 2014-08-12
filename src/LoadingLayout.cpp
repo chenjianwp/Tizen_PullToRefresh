@@ -46,29 +46,15 @@ LoadingLayout::Construct(Tizen::Ui::Animations::ParallelAnimationGroup* aniGroup
 		mHeaderText = new Label();
 		mHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Header Text");
 		mHeaderText->SetTextVerticalAlignment(ALIGNMENT_MIDDLE);
-		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
-		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
+		
 		__pTableView->AddControl(mHeaderText);
 
 		mSubHeaderText = new Label();
 		mSubHeaderText->Construct(Rectangle(0,0,GetParent()->GetBounds().width, GetParent()->GetBounds().height), L"Sub Header Text");
 		mSubHeaderText->SetTextVerticalAlignment(ALIGNMENT_MIDDLE);
-		//TextBox에 초기화 될 내용 HeaderText라던지 있어야됨
-		//LoadingLayout에서 위치를 잡아줄 부분이 필요함.
+		
 		__pTableView->AddControl(mSubHeaderText);
-
-//		VisualElement를 이용해서 초기화 하는 부분. VisualElement 애니메이션을 사용. -> Bitmap으로 초기화하는 부분이 없는듯.
-//		mHeaderImage = new VisualElement();
-//		mHeaderImage->Construct();
-//		mHeaderImage->SetBounds(FloatRectangle(10.0f, 10.0f, 10.0f, 10.0f));
-//		mHeaderImage->SetShowState(true);
-//		mHeaderImage->SetContentProvider(this);
-//
-//		GetVisualElement()->AttachChild(mHeaderImage);
-//		mHeaderImage->InvalidateRectangle(null);
-
-
-//		Label을 사용해서 BackGround Image를 넣어 초기화 하는 방법. UI Control 애니메이션을 사용.
+		
 		mHeaderImage = new Label();
 
 		AppResource* pAppResource = Application::GetInstance()->GetAppResource();
@@ -215,9 +201,6 @@ LoadingLayout::setLastUpdatedLabel(const String& label)
 void
 LoadingLayout::setLoadingDrawable(Bitmap& imageBitmap)
 {
-	//image를 저장해 주고
-	//애니메이션일 경우 isAnimation을 true로 만들어준다.
-
 	onLoadingDrawableSet(imageBitmap);
 }
 
@@ -267,15 +250,6 @@ LoadingLayout::showInvisibleViews()
 	Invalidate(true);
 }
 
-// XML을 사용한 SubText의 스타일설정. 없어도 될 듯.
-//void
-//LoadingLayout::setSubTextAppearance(int value)
-//{
-//	if(null != mSubHeaderText)
-//	{
-//		mSubHeaderText->
-//	}
-//}
 
 void
 LoadingLayout::setSubTextColor(Color& color)
@@ -286,12 +260,6 @@ LoadingLayout::setSubTextColor(Color& color)
 	}
 }
 
-// XML을 사용한 Text의 스타일 설정.
-//void
-//LoadingLayout::setTextAppearance(int value)
-//{
-//
-//}
 
 void
 LoadingLayout::setTextColor(Color& color)
