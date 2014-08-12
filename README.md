@@ -19,14 +19,14 @@ of your Tizen application Project.
 ->  Add PullToRefreshListView in form ProjectForm::OnInitializing(void) method!!
 
 
-->  PullToRefreshListView* listview = new PullToRefreshListView();
+   PullToRefreshListView* listview = new PullToRefreshListView();
 
   	listview->Construct(*this);
   	
   	listview->getRefreshableView()->SetItemProvider(*this);
-  	
+  	 
   	listview->setOnPullEventListener(*this);
-  	
+  	 
   	listview->setOnRefreshListener(*this);
   	
   	
